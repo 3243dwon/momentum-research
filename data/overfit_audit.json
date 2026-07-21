@@ -1,0 +1,768 @@
+{
+  "purpose": "Selection-aware audit of the indicator-proof family: DSR (is the FDR survivor's Sharpe real GIVEN it was the best of 35 trials?) and PBO (does the family's in-sample winner keep winning out of sample?).",
+  "method": {
+    "panel": "indicator_proof._combined \u2014 next-bar entry, market-demeaned, liquidity-floored",
+    "common_scale": "per-date mean demeaned fired return, aggregated to non-overlapping 21-trading-day bins (family max horizon) before any Sharpe",
+    "dsr": "Bailey-L\u00f3pez de Prado: PSR evaluated at E[max SR] of n_trials with the family's cross-trial SR variance",
+    "pbo": "CSCV over C(10,5) contiguous train/test bisections; 21-day embargo at every block tail; zero-fill on silent dates",
+    "portfolio_dsr": "\u00a710.1: every trial's fired events through the identical executable 5-slot simulator; DSR on the survivor's daily SPY-excess account series against the family's account-level SR dispersion",
+    "fold_consistency": "5 contiguous folds, 21-day purge at each fold tail, moving-block CI per fold"
+  },
+  "conservatism": [
+    "cross-trial SR variance includes the family's REAL edge dispersion \u2192 hurdle biased UP",
+    "35 correlated trials treated as independent draws \u2192 E[max] biased UP",
+    "short-horizon trials over-blocked at 21d \u2192 their noise widened, never narrowed"
+  ],
+  "caveats": [
+    "same in-sample panel as the proof \u2014 survivorship / single-regime caveats carry over verbatim",
+    "zero-fill makes silent dates literal 0.0 (flat book), diluting per-period Sharpe uniformly across trials"
+  ],
+  "family": {
+    "n_trials": 35,
+    "sr_variance_bin": 0.0349,
+    "trials": [
+      {
+        "trial": "rsi_healthy@1d",
+        "n_days": 1218,
+        "n_bins": 58,
+        "sr_bin": -0.017
+      },
+      {
+        "trial": "rsi_healthy@3d",
+        "n_days": 1216,
+        "n_bins": 58,
+        "sr_bin": -0.0783
+      },
+      {
+        "trial": "rsi_healthy@5d",
+        "n_days": 1214,
+        "n_bins": 58,
+        "sr_bin": -0.1187
+      },
+      {
+        "trial": "rsi_healthy@10d",
+        "n_days": 1209,
+        "n_bins": 58,
+        "sr_bin": -0.1249
+      },
+      {
+        "trial": "rsi_healthy@21d",
+        "n_days": 1198,
+        "n_bins": 58,
+        "sr_bin": -0.1018
+      },
+      {
+        "trial": "rsi_overbought@1d",
+        "n_days": 1127,
+        "n_bins": 58,
+        "sr_bin": 0.0519
+      },
+      {
+        "trial": "rsi_overbought@3d",
+        "n_days": 1125,
+        "n_bins": 58,
+        "sr_bin": 0.0688
+      },
+      {
+        "trial": "rsi_overbought@5d",
+        "n_days": 1123,
+        "n_bins": 58,
+        "sr_bin": 0.0292
+      },
+      {
+        "trial": "rsi_overbought@10d",
+        "n_days": 1118,
+        "n_bins": 58,
+        "sr_bin": 0.0089
+      },
+      {
+        "trial": "rsi_overbought@21d",
+        "n_days": 1107,
+        "n_bins": 58,
+        "sr_bin": -0.0533
+      },
+      {
+        "trial": "rsi_oversold@1d",
+        "n_days": 1136,
+        "n_bins": 58,
+        "sr_bin": -0.0826
+      },
+      {
+        "trial": "rsi_oversold@3d",
+        "n_days": 1134,
+        "n_bins": 58,
+        "sr_bin": -0.167
+      },
+      {
+        "trial": "rsi_oversold@5d",
+        "n_days": 1132,
+        "n_bins": 58,
+        "sr_bin": -0.1629
+      },
+      {
+        "trial": "rsi_oversold@10d",
+        "n_days": 1127,
+        "n_bins": 58,
+        "sr_bin": -0.2473
+      },
+      {
+        "trial": "rsi_oversold@21d",
+        "n_days": 1116,
+        "n_bins": 58,
+        "sr_bin": -0.3384
+      },
+      {
+        "trial": "macd_bull_cross@1d",
+        "n_days": 1191,
+        "n_bins": 58,
+        "sr_bin": -0.0128
+      },
+      {
+        "trial": "macd_bull_cross@3d",
+        "n_days": 1189,
+        "n_bins": 58,
+        "sr_bin": -0.0321
+      },
+      {
+        "trial": "macd_bull_cross@5d",
+        "n_days": 1187,
+        "n_bins": 58,
+        "sr_bin": -0.1296
+      },
+      {
+        "trial": "macd_bull_cross@10d",
+        "n_days": 1182,
+        "n_bins": 58,
+        "sr_bin": -0.157
+      },
+      {
+        "trial": "macd_bull_cross@21d",
+        "n_days": 1171,
+        "n_bins": 58,
+        "sr_bin": -0.0739
+      },
+      {
+        "trial": "macd_positive@1d",
+        "n_days": 1218,
+        "n_bins": 58,
+        "sr_bin": 0.0131
+      },
+      {
+        "trial": "macd_positive@3d",
+        "n_days": 1216,
+        "n_bins": 58,
+        "sr_bin": -0.0683
+      },
+      {
+        "trial": "macd_positive@5d",
+        "n_days": 1214,
+        "n_bins": 58,
+        "sr_bin": -0.0492
+      },
+      {
+        "trial": "macd_positive@10d",
+        "n_days": 1209,
+        "n_bins": 58,
+        "sr_bin": 0.0228
+      },
+      {
+        "trial": "macd_positive@21d",
+        "n_days": 1198,
+        "n_bins": 58,
+        "sr_bin": 0.1876
+      },
+      {
+        "trial": "rvol_high@1d",
+        "n_days": 1202,
+        "n_bins": 58,
+        "sr_bin": 0.139
+      },
+      {
+        "trial": "rvol_high@3d",
+        "n_days": 1200,
+        "n_bins": 58,
+        "sr_bin": 0.3316
+      },
+      {
+        "trial": "rvol_high@5d",
+        "n_days": 1198,
+        "n_bins": 58,
+        "sr_bin": 0.2925
+      },
+      {
+        "trial": "rvol_high@10d",
+        "n_days": 1193,
+        "n_bins": 58,
+        "sr_bin": 0.3129
+      },
+      {
+        "trial": "rvol_high@21d",
+        "n_days": 1182,
+        "n_bins": 58,
+        "sr_bin": 0.2332
+      },
+      {
+        "trial": "gap_up@1d",
+        "n_days": 1144,
+        "n_bins": 58,
+        "sr_bin": -0.0131
+      },
+      {
+        "trial": "gap_up@3d",
+        "n_days": 1142,
+        "n_bins": 58,
+        "sr_bin": 0.2983
+      },
+      {
+        "trial": "gap_up@5d",
+        "n_days": 1140,
+        "n_bins": 58,
+        "sr_bin": 0.3052
+      },
+      {
+        "trial": "gap_up@10d",
+        "n_days": 1135,
+        "n_bins": 58,
+        "sr_bin": 0.3918
+      },
+      {
+        "trial": "gap_up@21d",
+        "n_days": 1124,
+        "n_bins": 58,
+        "sr_bin": 0.4068
+      }
+    ]
+  },
+  "dsr": {
+    "survivor": "gap_up@21d",
+    "block_aggregated": {
+      "sr": 0.4068,
+      "t": 58,
+      "skew": 0.2551,
+      "kurt": 2.4146,
+      "sr_star": 0.3991,
+      "psr": 0.9992,
+      "dsr": 0.5237,
+      "n_trials": 35,
+      "sr_annualized": 1.409
+    },
+    "naive_daily": {
+      "sr": 0.1887,
+      "t": 1124,
+      "skew": 2.1805,
+      "kurt": 21.3003,
+      "sr_star": 0.1661,
+      "psr": 1.0,
+      "dsr": 0.8065,
+      "n_trials": 35
+    },
+    "note": "block_aggregated is the honest read (independent bins); naive_daily shows what overlap-inflated T would have claimed"
+  },
+  "pbo": {
+    "pbo": 0.0476,
+    "n_combos": 252,
+    "n_trials": 35,
+    "n_periods": 1009,
+    "n_blocks": 10,
+    "median_logit": 2.8332,
+    "prob_oos_loss": 0.0317,
+    "focus": {
+      "picked_frac": 0.683,
+      "oos_rank_median": 35.0,
+      "n_trials": 35
+    },
+    "embargo_days": 21,
+    "zero_fill": true,
+    "focus_trial": "gap_up@21d"
+  },
+  "portfolio_dsr": {
+    "spec": "executable: entry close[i+1], 1.0% RT cost, 5 slots, 4.0% cash yield, random fill (median-end-equity seed quoted)",
+    "unit": "daily portfolio return minus same-day SPY return \u2014 the account-level excess; null of zero = no skill \u21d2 held the market",
+    "prereg_sha256": "3383e1d15a8f1e55",
+    "focus": {
+      "trial": "gap_up@21d",
+      "sr": 0.0221,
+      "t": 1217,
+      "skew": 0.4201,
+      "kurt": 11.6493,
+      "sr_star": 0.641,
+      "psr": 0.7809,
+      "dsr": 0.0,
+      "n_trials": 35,
+      "sr_annualized": 0.351,
+      "n_seeds": 200,
+      "seed_sr_band": {
+        "p05": -0.0077,
+        "p50": 0.0222,
+        "p95": 0.05
+      }
+    },
+    "family": {
+      "n_trials": 35,
+      "n_with_sr": 35,
+      "n_seeds_per_trial": 25,
+      "sr_variance_daily": 0.090039,
+      "per_trial": [
+        {
+          "trial": "rsi_healthy@1d",
+          "sr_daily": -0.9697541477600581,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.9698,
+            "p50": -0.9698,
+            "p95": -0.9698
+          }
+        },
+        {
+          "trial": "rsi_healthy@3d",
+          "sr_daily": -0.3548604891813114,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.3832,
+            "p50": -0.3553,
+            "p95": -0.3315
+          }
+        },
+        {
+          "trial": "rsi_healthy@5d",
+          "sr_daily": -0.23041809571225483,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.2497,
+            "p50": -0.2209,
+            "p95": -0.1843
+          }
+        },
+        {
+          "trial": "rsi_healthy@10d",
+          "sr_daily": -0.1035529069970021,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1592,
+            "p50": -0.1083,
+            "p95": -0.0632
+          }
+        },
+        {
+          "trial": "rsi_healthy@21d",
+          "sr_daily": -0.07118328740031168,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1102,
+            "p50": -0.0703,
+            "p95": -0.0331
+          }
+        },
+        {
+          "trial": "rsi_overbought@1d",
+          "sr_daily": -0.7849685297534212,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.785,
+            "p50": -0.785,
+            "p95": -0.785
+          }
+        },
+        {
+          "trial": "rsi_overbought@3d",
+          "sr_daily": -0.2658494049786358,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.3013,
+            "p50": -0.2685,
+            "p95": -0.2359
+          }
+        },
+        {
+          "trial": "rsi_overbought@5d",
+          "sr_daily": -0.1527365064232968,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1895,
+            "p50": -0.1527,
+            "p95": -0.135
+          }
+        },
+        {
+          "trial": "rsi_overbought@10d",
+          "sr_daily": -0.0730115580410499,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.0961,
+            "p50": -0.073,
+            "p95": -0.0463
+          }
+        },
+        {
+          "trial": "rsi_overbought@21d",
+          "sr_daily": -0.0490269626588787,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.0633,
+            "p50": -0.0418,
+            "p95": -0.0033
+          }
+        },
+        {
+          "trial": "rsi_oversold@1d",
+          "sr_daily": -0.7197130354832132,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.7197,
+            "p50": -0.7197,
+            "p95": -0.7197
+          }
+        },
+        {
+          "trial": "rsi_oversold@3d",
+          "sr_daily": -0.28569634840848535,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.315,
+            "p50": -0.2857,
+            "p95": -0.2634
+          }
+        },
+        {
+          "trial": "rsi_oversold@5d",
+          "sr_daily": -0.16051580368505627,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1836,
+            "p50": -0.1655,
+            "p95": -0.1419
+          }
+        },
+        {
+          "trial": "rsi_oversold@10d",
+          "sr_daily": -0.09935224280928864,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1153,
+            "p50": -0.0976,
+            "p95": -0.078
+          }
+        },
+        {
+          "trial": "rsi_oversold@21d",
+          "sr_daily": -0.06793628305036223,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1006,
+            "p50": -0.0679,
+            "p95": -0.0469
+          }
+        },
+        {
+          "trial": "macd_bull_cross@1d",
+          "sr_daily": -0.871393861750894,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.8714,
+            "p50": -0.8714,
+            "p95": -0.8714
+          }
+        },
+        {
+          "trial": "macd_bull_cross@3d",
+          "sr_daily": -0.3520132976382967,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.3703,
+            "p50": -0.3489,
+            "p95": -0.314
+          }
+        },
+        {
+          "trial": "macd_bull_cross@5d",
+          "sr_daily": -0.21542778937651288,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.2327,
+            "p50": -0.2052,
+            "p95": -0.1616
+          }
+        },
+        {
+          "trial": "macd_bull_cross@10d",
+          "sr_daily": -0.1037552985119512,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1185,
+            "p50": -0.099,
+            "p95": -0.0499
+          }
+        },
+        {
+          "trial": "macd_bull_cross@21d",
+          "sr_daily": -0.055038121202002764,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1008,
+            "p50": -0.056,
+            "p95": -0.0342
+          }
+        },
+        {
+          "trial": "macd_positive@1d",
+          "sr_daily": -0.9734339270129728,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.9734,
+            "p50": -0.9734,
+            "p95": -0.9734
+          }
+        },
+        {
+          "trial": "macd_positive@3d",
+          "sr_daily": -0.32071739081191286,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.3867,
+            "p50": -0.3244,
+            "p95": -0.2944
+          }
+        },
+        {
+          "trial": "macd_positive@5d",
+          "sr_daily": -0.2175759304243178,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.2798,
+            "p50": -0.226,
+            "p95": -0.1888
+          }
+        },
+        {
+          "trial": "macd_positive@10d",
+          "sr_daily": -0.09969179613421252,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1417,
+            "p50": -0.1035,
+            "p95": -0.0739
+          }
+        },
+        {
+          "trial": "macd_positive@21d",
+          "sr_daily": -0.05360234349312758,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.0826,
+            "p50": -0.0513,
+            "p95": -0.0092
+          }
+        },
+        {
+          "trial": "rvol_high@1d",
+          "sr_daily": -0.9250637909617242,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.9251,
+            "p50": -0.9251,
+            "p95": -0.9251
+          }
+        },
+        {
+          "trial": "rvol_high@3d",
+          "sr_daily": -0.31079672009922077,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.331,
+            "p50": -0.3094,
+            "p95": -0.2791
+          }
+        },
+        {
+          "trial": "rvol_high@5d",
+          "sr_daily": -0.18806615181943262,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.2328,
+            "p50": -0.1881,
+            "p95": -0.1597
+          }
+        },
+        {
+          "trial": "rvol_high@10d",
+          "sr_daily": -0.09009191704376958,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1276,
+            "p50": -0.0877,
+            "p95": -0.0365
+          }
+        },
+        {
+          "trial": "rvol_high@21d",
+          "sr_daily": -0.03448259294523337,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.0556,
+            "p50": -0.0333,
+            "p95": 0.0001
+          }
+        },
+        {
+          "trial": "gap_up@1d",
+          "sr_daily": -0.7290027447865401,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.729,
+            "p50": -0.729,
+            "p95": -0.729
+          }
+        },
+        {
+          "trial": "gap_up@3d",
+          "sr_daily": -0.18671937430361774,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.2115,
+            "p50": -0.1954,
+            "p95": -0.1695
+          }
+        },
+        {
+          "trial": "gap_up@5d",
+          "sr_daily": -0.0732245111764924,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.1076,
+            "p50": -0.0761,
+            "p95": -0.0483
+          }
+        },
+        {
+          "trial": "gap_up@10d",
+          "sr_daily": -0.020948111290591674,
+          "n_days": 1217,
+          "n_seeds": 25,
+          "seed_sr_band": {
+            "p05": -0.0472,
+            "p50": -0.0209,
+            "p95": 0.0222
+          }
+        },
+        {
+          "trial": "gap_up@21d",
+          "sr_daily": 0.02214611365936828,
+          "n_days": 1217,
+          "n_seeds": 200,
+          "seed_sr_band": {
+            "p05": -0.0077,
+            "p50": 0.0222,
+            "p95": 0.05
+          }
+        }
+      ]
+    },
+    "method_note": "Same DSR machinery as \u00a77 but on the account-level series: the hurdle's cross-trial variance is measured from the family run through the identical simulator (identical costs, slots, fill policy; each trial's clock starts at its own first deployable session). Family members use median-of-25-seed runs \u2014 a hurdle estimate, not a quoted path; the survivor keeps the full pre-registered 200. Cross-trial variance includes real edge dispersion and trials are treated as independent \u2014 both bias the hurdle UP, same conservatism as the signal-level DSR."
+  },
+  "fold_consistency": {
+    "k": 5,
+    "n_positive": 4,
+    "folds": [
+      {
+        "fold": 1,
+        "date_min": "2021-08-30",
+        "date_max": "2022-07-19",
+        "n_fired_days": 205,
+        "edge_pct": -0.2168,
+        "ci_low": -2.0056,
+        "ci_high": 1.7142,
+        "verdict": "coin_flip"
+      },
+      {
+        "fold": 2,
+        "date_min": "2022-08-18",
+        "date_max": "2023-07-10",
+        "n_fired_days": 200,
+        "edge_pct": 2.8899,
+        "ci_low": 0.3395,
+        "ci_high": 5.9969,
+        "verdict": "edge"
+      },
+      {
+        "fold": 3,
+        "date_min": "2023-08-09",
+        "date_max": "2024-06-27",
+        "n_fired_days": 201,
+        "edge_pct": 0.737,
+        "ci_low": -1.24,
+        "ci_high": 2.7962,
+        "verdict": "coin_flip"
+      },
+      {
+        "fold": 4,
+        "date_min": "2024-07-30",
+        "date_max": "2025-06-18",
+        "n_fired_days": 218,
+        "edge_pct": 1.7488,
+        "ci_low": 0.1568,
+        "ci_high": 3.4353,
+        "verdict": "edge"
+      },
+      {
+        "fold": 5,
+        "date_min": "2025-07-22",
+        "date_max": "2026-06-08",
+        "n_fired_days": 217,
+        "edge_pct": 4.5278,
+        "ci_low": 2.3559,
+        "ci_high": 6.8057,
+        "verdict": "edge"
+      }
+    ]
+  },
+  "universe": {
+    "n_symbols": 510,
+    "date_min": "2021-08-30",
+    "date_max": "2026-07-09",
+    "symbols_sha256": "f767eaa3708d6dd1",
+    "matches_indicator_proof": true
+  },
+  "config": {
+    "n_blocks": 10,
+    "embargo": 21,
+    "k_folds": 5,
+    "n_boot": 1000,
+    "seed": 0,
+    "bin_days": 21
+  },
+  "generated_at": "2026-07-20T12:54:26Z",
+  "git_sha": "06052f7"
+}

@@ -1,0 +1,1505 @@
+{
+  "source": "historical backtest (Alpaca IEX daily OHLCV)",
+  "horizons": [
+    1,
+    3,
+    5,
+    10,
+    21
+  ],
+  "entry": "signal at close[i]; enter open[i+1]; exit close[i+h] \u2014 no same-bar look-ahead",
+  "benchmark": "cross-sectional: forward return market-demeaned by same-day universe mean (beta-neutral)",
+  "inference": "moving-block bootstrap over calendar dates, block_len=max(5, horizon) \u2014 overlap-aware: i.i.d.-date CIs read several times too tight on 10/21d. n_days = distinct dates, n_indep = independent blocks, n_obs = inflated ticker-day count",
+  "out_of_sample": {
+    "oos_frac": 0.3,
+    "split_date": "2025-01-23 05:00:00+00:00",
+    "note": "each cell.oos grades the held-out tail; holds_oos = full edge did not flip adverse there. Under-powered relative to the full window \u2014 a stability read, not a second proof."
+  },
+  "regime": {
+    "definition": "risk_on = SPY above BOTH its 50d and 200d SMA, else other",
+    "note": "cell.by_regime splits the edge; an edge only in risk_on is beta in disguise."
+  },
+  "multiple_testing": {
+    "method": "Benjamini-Hochberg FDR",
+    "q": 0.05,
+    "cells": 35,
+    "passed": 1,
+    "expected_false": 1.8
+  },
+  "caveats": [
+    "Survivorship / current-membership universe (today's popular()); delisted/dropped names absent \u2014 edges biased UP. Unfixable on Alpaca IEX.",
+    "RVOL and gap are computed on IEX partial-tape volume / non-auction open \u2192 indicative, not tradeable, unlike close-based RSI/MACD (indicative_only=true).",
+    "Thresholds are trading lore, graded IN-SAMPLE over a single (mostly bull) regime; treat any thin edge as unproven."
+  ],
+  "config": {
+    "slippage_round_trip_pct": 0.5,
+    "n_boot": 1000,
+    "seed": 0
+  },
+  "universe": {
+    "n_symbols": 510,
+    "date_min": "2021-08-30 04:00:00+00:00",
+    "date_max": "2026-07-09 04:00:00+00:00",
+    "symbols_sha256": "f767eaa3708d6dd1"
+  },
+  "indicators": {
+    "rsi_healthy": {
+      "key": "rsi",
+      "label": "RSI 55\u201372 \u00b7 \u5065\u5eb7\u8d8b\u52bf\u533a",
+      "direction": "long",
+      "indicative_only": false,
+      "horizons": {
+        "1d": {
+          "n_obs": 179641,
+          "n_days": 1218,
+          "n_indep": 243,
+          "edge_pct": 0.0043,
+          "edge_ci_low": -0.0105,
+          "edge_ci_high": 0.0198,
+          "p_value": 0.504,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.511,
+          "raw_fired_avg_pct": 0.02,
+          "raw_control_avg_pct": 0.02,
+          "raw_edge_pct": 0.0,
+          "oos": {
+            "n_days": 365,
+            "edge_pct": -0.0071,
+            "ci_low": -0.0363,
+            "ci_high": 0.0228,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 672,
+              "edge_pct": 0.0019,
+              "ci_low": -0.0135,
+              "ci_high": 0.0181,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 546,
+              "edge_pct": 0.009,
+              "ci_low": -0.024,
+              "ci_high": 0.0432,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "3d": {
+          "n_obs": 179219,
+          "n_days": 1216,
+          "n_indep": 243,
+          "edge_pct": 0.0143,
+          "edge_ci_low": -0.0256,
+          "edge_ci_high": 0.0533,
+          "p_value": 0.496,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.522,
+          "raw_fired_avg_pct": 0.11,
+          "raw_control_avg_pct": 0.15,
+          "raw_edge_pct": -0.04,
+          "oos": {
+            "n_days": 363,
+            "edge_pct": 0.0124,
+            "ci_low": -0.063,
+            "ci_high": 0.0951,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 670,
+              "edge_pct": 0.0165,
+              "ci_low": -0.0245,
+              "ci_high": 0.0576,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 546,
+              "edge_pct": 0.0099,
+              "ci_low": -0.0784,
+              "ci_high": 0.0923,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "5d": {
+          "n_obs": 178753,
+          "n_days": 1214,
+          "n_indep": 242,
+          "edge_pct": 0.013,
+          "edge_ci_low": -0.0463,
+          "edge_ci_high": 0.0719,
+          "p_value": 0.682,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.525,
+          "raw_fired_avg_pct": 0.2,
+          "raw_control_avg_pct": 0.27,
+          "raw_edge_pct": -0.07,
+          "oos": {
+            "n_days": 361,
+            "edge_pct": 0.0103,
+            "ci_low": -0.1134,
+            "ci_high": 0.1332,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 668,
+              "edge_pct": 0.0206,
+              "ci_low": -0.0426,
+              "ci_high": 0.0844,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 546,
+              "edge_pct": -0.0019,
+              "ci_low": -0.1278,
+              "ci_high": 0.1141,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "10d": {
+          "n_obs": 177626,
+          "n_days": 1209,
+          "n_indep": 120,
+          "edge_pct": 0.0341,
+          "edge_ci_low": -0.0812,
+          "edge_ci_high": 0.1481,
+          "p_value": 0.582,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.53,
+          "raw_fired_avg_pct": 0.42,
+          "raw_control_avg_pct": 0.57,
+          "raw_edge_pct": -0.15,
+          "oos": {
+            "n_days": 356,
+            "edge_pct": 0.125,
+            "ci_low": -0.0961,
+            "ci_high": 0.342,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 664,
+              "edge_pct": 0.1154,
+              "ci_low": 0.0117,
+              "ci_high": 0.2377,
+              "verdict": "edge"
+            },
+            "other": {
+              "n_days": 545,
+              "edge_pct": -0.1264,
+              "ci_low": -0.3449,
+              "ci_high": 0.1004,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "21d": {
+          "n_obs": 175450,
+          "n_days": 1198,
+          "n_indep": 57,
+          "edge_pct": 0.0929,
+          "edge_ci_low": -0.1262,
+          "edge_ci_high": 0.3134,
+          "p_value": 0.43,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.529,
+          "raw_fired_avg_pct": 0.83,
+          "raw_control_avg_pct": 1.28,
+          "raw_edge_pct": -0.45,
+          "oos": {
+            "n_days": 345,
+            "edge_pct": 0.392,
+            "ci_low": 0.0199,
+            "ci_high": 0.7202,
+            "verdict": "edge"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 653,
+              "edge_pct": 0.2144,
+              "ci_low": 0.0184,
+              "ci_high": 0.4116,
+              "verdict": "edge"
+            },
+            "other": {
+              "n_days": 545,
+              "edge_pct": -0.1423,
+              "ci_low": -0.6287,
+              "ci_high": 0.2932,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        }
+      }
+    },
+    "rsi_overbought": {
+      "key": "rsi",
+      "label": "RSI \u2265 72 \u00b7 \u8d85\u4e70",
+      "direction": "long",
+      "indicative_only": false,
+      "horizons": {
+        "1d": {
+          "n_obs": 26147,
+          "n_days": 1127,
+          "n_indep": 225,
+          "edge_pct": 0.03,
+          "edge_ci_low": -0.0094,
+          "edge_ci_high": 0.0741,
+          "p_value": 0.156,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.508,
+          "raw_fired_avg_pct": 0.01,
+          "raw_control_avg_pct": 0.02,
+          "raw_edge_pct": -0.01,
+          "oos": {
+            "n_days": 351,
+            "edge_pct": 0.0263,
+            "ci_low": -0.067,
+            "ci_high": 0.1144,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 670,
+              "edge_pct": 0.0269,
+              "ci_low": -0.0146,
+              "ci_high": 0.0732,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 457,
+              "edge_pct": 0.0404,
+              "ci_low": -0.0711,
+              "ci_high": 0.1554,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "3d": {
+          "n_obs": 26104,
+          "n_days": 1125,
+          "n_indep": 225,
+          "edge_pct": 0.0799,
+          "edge_ci_low": -0.038,
+          "edge_ci_high": 0.2032,
+          "p_value": 0.19,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.511,
+          "raw_fired_avg_pct": 0.11,
+          "raw_control_avg_pct": 0.13,
+          "raw_edge_pct": -0.02,
+          "oos": {
+            "n_days": 349,
+            "edge_pct": 0.1543,
+            "ci_low": -0.0936,
+            "ci_high": 0.4516,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 668,
+              "edge_pct": 0.0913,
+              "ci_low": -0.0425,
+              "ci_high": 0.2294,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 457,
+              "edge_pct": 0.0413,
+              "ci_low": -0.189,
+              "ci_high": 0.305,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "5d": {
+          "n_obs": 26030,
+          "n_days": 1123,
+          "n_indep": 224,
+          "edge_pct": 0.1617,
+          "edge_ci_low": -0.0201,
+          "edge_ci_high": 0.3518,
+          "p_value": 0.092,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.519,
+          "raw_fired_avg_pct": 0.25,
+          "raw_control_avg_pct": 0.24,
+          "raw_edge_pct": 0.01,
+          "oos": {
+            "n_days": 347,
+            "edge_pct": 0.321,
+            "ci_low": -0.071,
+            "ci_high": 0.7868,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 666,
+              "edge_pct": 0.1751,
+              "ci_low": -0.0346,
+              "ci_high": 0.4069,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 457,
+              "edge_pct": 0.1168,
+              "ci_low": -0.2103,
+              "ci_high": 0.4817,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "10d": {
+          "n_obs": 25896,
+          "n_days": 1118,
+          "n_indep": 111,
+          "edge_pct": 0.3822,
+          "edge_ci_low": 0.0487,
+          "edge_ci_high": 0.7542,
+          "p_value": 0.034,
+          "verdict": "edge",
+          "survives_fdr": false,
+          "hit_rate": 0.536,
+          "raw_fired_avg_pct": 0.7,
+          "raw_control_avg_pct": 0.51,
+          "raw_edge_pct": 0.19,
+          "oos": {
+            "n_days": 342,
+            "edge_pct": 0.7501,
+            "ci_low": 0.0942,
+            "ci_high": 1.5045,
+            "verdict": "edge"
+          },
+          "holds_oos": true,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 662,
+              "edge_pct": 0.4987,
+              "ci_low": 0.1261,
+              "ci_high": 0.9352,
+              "verdict": "edge"
+            },
+            "other": {
+              "n_days": 456,
+              "edge_pct": -0.0079,
+              "ci_low": -0.6304,
+              "ci_high": 0.6418,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "21d": {
+          "n_obs": 25778,
+          "n_days": 1107,
+          "n_indep": 52,
+          "edge_pct": 0.6959,
+          "edge_ci_low": 0.0543,
+          "edge_ci_high": 1.4033,
+          "p_value": 0.038,
+          "verdict": "edge",
+          "survives_fdr": false,
+          "hit_rate": 0.533,
+          "raw_fired_avg_pct": 1.21,
+          "raw_control_avg_pct": 1.11,
+          "raw_edge_pct": 0.1,
+          "oos": {
+            "n_days": 331,
+            "edge_pct": 1.3065,
+            "ci_low": -0.0496,
+            "ci_high": 2.9639,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": true,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 651,
+              "edge_pct": 0.8092,
+              "ci_low": 0.0372,
+              "ci_high": 1.7763,
+              "verdict": "edge"
+            },
+            "other": {
+              "n_days": 456,
+              "edge_pct": 0.3187,
+              "ci_low": -0.7859,
+              "ci_high": 1.2898,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        }
+      }
+    },
+    "rsi_oversold": {
+      "key": "rsi",
+      "label": "RSI < 30 \u00b7 \u8d85\u5356",
+      "direction": "long",
+      "indicative_only": false,
+      "horizons": {
+        "1d": {
+          "n_obs": 17874,
+          "n_days": 1136,
+          "n_indep": 227,
+          "edge_pct": 0.0436,
+          "edge_ci_low": -0.0235,
+          "edge_ci_high": 0.1212,
+          "p_value": 0.214,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.51,
+          "raw_fired_avg_pct": 0.17,
+          "raw_control_avg_pct": 0.01,
+          "raw_edge_pct": 0.16,
+          "oos": {
+            "n_days": 361,
+            "edge_pct": 0.0978,
+            "ci_low": -0.0533,
+            "ci_high": 0.2712,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 629,
+              "edge_pct": -0.0326,
+              "ci_low": -0.1158,
+              "ci_high": 0.0516,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 507,
+              "edge_pct": 0.0837,
+              "ci_low": -0.0166,
+              "ci_high": 0.1954,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "3d": {
+          "n_obs": 17868,
+          "n_days": 1134,
+          "n_indep": 226,
+          "edge_pct": 0.0471,
+          "edge_ci_low": -0.1084,
+          "edge_ci_high": 0.2016,
+          "p_value": 0.562,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.544,
+          "raw_fired_avg_pct": 0.55,
+          "raw_control_avg_pct": 0.12,
+          "raw_edge_pct": 0.43,
+          "oos": {
+            "n_days": 359,
+            "edge_pct": 0.1014,
+            "ci_low": -0.2623,
+            "ci_high": 0.4047,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 627,
+              "edge_pct": -0.1113,
+              "ci_low": -0.4098,
+              "ci_high": 0.1792,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 507,
+              "edge_pct": 0.1306,
+              "ci_low": -0.0615,
+              "ci_high": 0.3229,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "5d": {
+          "n_obs": 17854,
+          "n_days": 1132,
+          "n_indep": 226,
+          "edge_pct": 0.0187,
+          "edge_ci_low": -0.2167,
+          "edge_ci_high": 0.2431,
+          "p_value": 0.874,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.572,
+          "raw_fired_avg_pct": 0.83,
+          "raw_control_avg_pct": 0.22,
+          "raw_edge_pct": 0.61,
+          "oos": {
+            "n_days": 357,
+            "edge_pct": 0.0589,
+            "ci_low": -0.4118,
+            "ci_high": 0.4973,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 625,
+              "edge_pct": -0.0763,
+              "ci_low": -0.4933,
+              "ci_high": 0.3727,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 507,
+              "edge_pct": 0.0686,
+              "ci_low": -0.1563,
+              "ci_high": 0.2753,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "10d": {
+          "n_obs": 17765,
+          "n_days": 1127,
+          "n_indep": 112,
+          "edge_pct": 0.0304,
+          "edge_ci_low": -0.3953,
+          "edge_ci_high": 0.4482,
+          "p_value": 0.892,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.594,
+          "raw_fired_avg_pct": 1.29,
+          "raw_control_avg_pct": 0.49,
+          "raw_edge_pct": 0.8,
+          "oos": {
+            "n_days": 352,
+            "edge_pct": 0.1915,
+            "ci_low": -0.7468,
+            "ci_high": 1.0668,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 621,
+              "edge_pct": -0.3399,
+              "ci_low": -1.1279,
+              "ci_high": 0.3624,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 506,
+              "edge_pct": 0.2229,
+              "ci_low": -0.1735,
+              "ci_high": 0.666,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "21d": {
+          "n_obs": 17633,
+          "n_days": 1116,
+          "n_indep": 53,
+          "edge_pct": -0.2008,
+          "edge_ci_low": -0.7745,
+          "edge_ci_high": 0.3424,
+          "p_value": 0.496,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.593,
+          "raw_fired_avg_pct": 1.99,
+          "raw_control_avg_pct": 1.08,
+          "raw_edge_pct": 0.91,
+          "oos": {
+            "n_days": 341,
+            "edge_pct": -0.1178,
+            "ci_low": -1.3004,
+            "ci_high": 1.0556,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 610,
+              "edge_pct": -0.412,
+              "ci_low": -1.3857,
+              "ci_high": 0.527,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 506,
+              "edge_pct": -0.0933,
+              "ci_low": -0.6309,
+              "ci_high": 0.499,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        }
+      }
+    },
+    "macd_bull_cross": {
+      "key": "macd",
+      "label": "MACD \u91d1\u53c9 \u00b7 \u67f1\u4e0a\u7a7f\u96f6\u8f74",
+      "direction": "long",
+      "indicative_only": false,
+      "horizons": {
+        "1d": {
+          "n_obs": 20215,
+          "n_days": 1191,
+          "n_indep": 238,
+          "edge_pct": -0.0062,
+          "edge_ci_low": -0.0371,
+          "edge_ci_high": 0.0213,
+          "p_value": 0.602,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.501,
+          "raw_fired_avg_pct": -0.01,
+          "raw_control_avg_pct": 0.02,
+          "raw_edge_pct": -0.03,
+          "oos": {
+            "n_days": 363,
+            "edge_pct": 0.003,
+            "ci_low": -0.0523,
+            "ci_high": 0.0563,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 668,
+              "edge_pct": -0.008,
+              "ci_low": -0.0483,
+              "ci_high": 0.0299,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 523,
+              "edge_pct": -0.0039,
+              "ci_low": -0.0531,
+              "ci_high": 0.0405,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "3d": {
+          "n_obs": 20180,
+          "n_days": 1189,
+          "n_indep": 237,
+          "edge_pct": -0.0049,
+          "edge_ci_low": -0.078,
+          "edge_ci_high": 0.0664,
+          "p_value": 0.8,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.517,
+          "raw_fired_avg_pct": 0.06,
+          "raw_control_avg_pct": 0.14,
+          "raw_edge_pct": -0.08,
+          "oos": {
+            "n_days": 361,
+            "edge_pct": 0.0605,
+            "ci_low": -0.0836,
+            "ci_high": 0.1898,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 666,
+              "edge_pct": -0.0079,
+              "ci_low": -0.101,
+              "ci_high": 0.0872,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 523,
+              "edge_pct": -0.0011,
+              "ci_low": -0.1237,
+              "ci_high": 0.1036,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "5d": {
+          "n_obs": 20127,
+          "n_days": 1187,
+          "n_indep": 237,
+          "edge_pct": -0.0384,
+          "edge_ci_low": -0.1342,
+          "edge_ci_high": 0.0492,
+          "p_value": 0.378,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.517,
+          "raw_fired_avg_pct": 0.15,
+          "raw_control_avg_pct": 0.25,
+          "raw_edge_pct": -0.1,
+          "oos": {
+            "n_days": 359,
+            "edge_pct": -0.0157,
+            "ci_low": -0.2169,
+            "ci_high": 0.1686,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 664,
+              "edge_pct": -0.0709,
+              "ci_low": -0.2016,
+              "ci_high": 0.0525,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 523,
+              "edge_pct": 0.0037,
+              "ci_low": -0.1328,
+              "ci_high": 0.1405,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "10d": {
+          "n_obs": 20004,
+          "n_days": 1182,
+          "n_indep": 118,
+          "edge_pct": -0.1262,
+          "edge_ci_low": -0.2629,
+          "edge_ci_high": 0.0238,
+          "p_value": 0.09,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.528,
+          "raw_fired_avg_pct": 0.39,
+          "raw_control_avg_pct": 0.52,
+          "raw_edge_pct": -0.13,
+          "oos": {
+            "n_days": 354,
+            "edge_pct": -0.2452,
+            "ci_low": -0.5215,
+            "ci_high": 0.0375,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 660,
+              "edge_pct": -0.1622,
+              "ci_low": -0.3547,
+              "ci_high": 0.0131,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 522,
+              "edge_pct": -0.08,
+              "ci_low": -0.2923,
+              "ci_high": 0.143,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "21d": {
+          "n_obs": 19761,
+          "n_days": 1171,
+          "n_indep": 55,
+          "edge_pct": -0.1611,
+          "edge_ci_low": -0.3291,
+          "edge_ci_high": 0.031,
+          "p_value": 0.112,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.537,
+          "raw_fired_avg_pct": 1.08,
+          "raw_control_avg_pct": 1.12,
+          "raw_edge_pct": -0.04,
+          "oos": {
+            "n_days": 343,
+            "edge_pct": -0.2871,
+            "ci_low": -0.7083,
+            "ci_high": 0.0925,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 649,
+              "edge_pct": -0.1409,
+              "ci_low": -0.3897,
+              "ci_high": 0.0794,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 522,
+              "edge_pct": -0.1867,
+              "ci_low": -0.4584,
+              "ci_high": 0.0948,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        }
+      }
+    },
+    "macd_positive": {
+      "key": "macd",
+      "label": "MACD \u67f1 > 0 \u00b7 \u52a8\u80fd\u4e3a\u6b63",
+      "direction": "long",
+      "indicative_only": false,
+      "horizons": {
+        "1d": {
+          "n_obs": 261310,
+          "n_days": 1218,
+          "n_indep": 243,
+          "edge_pct": 0.0004,
+          "edge_ci_low": -0.0096,
+          "edge_ci_high": 0.012,
+          "p_value": 0.97,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.509,
+          "raw_fired_avg_pct": 0.02,
+          "raw_control_avg_pct": 0.02,
+          "raw_edge_pct": 0.0,
+          "oos": {
+            "n_days": 365,
+            "edge_pct": -0.0069,
+            "ci_low": -0.0292,
+            "ci_high": 0.0149,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 672,
+              "edge_pct": -0.0004,
+              "ci_low": -0.0147,
+              "ci_high": 0.0146,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 546,
+              "edge_pct": 0.0017,
+              "ci_low": -0.0178,
+              "ci_high": 0.0212,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "3d": {
+          "n_obs": 260675,
+          "n_days": 1216,
+          "n_indep": 243,
+          "edge_pct": -0.0103,
+          "edge_ci_low": -0.0454,
+          "edge_ci_high": 0.0216,
+          "p_value": 0.524,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.522,
+          "raw_fired_avg_pct": 0.12,
+          "raw_control_avg_pct": 0.14,
+          "raw_edge_pct": -0.02,
+          "oos": {
+            "n_days": 363,
+            "edge_pct": -0.0259,
+            "ci_low": -0.0968,
+            "ci_high": 0.0452,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 670,
+              "edge_pct": -0.0087,
+              "ci_low": -0.0495,
+              "ci_high": 0.0304,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 546,
+              "edge_pct": -0.0127,
+              "ci_low": -0.0677,
+              "ci_high": 0.0403,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "5d": {
+          "n_obs": 260027,
+          "n_days": 1214,
+          "n_indep": 242,
+          "edge_pct": -0.0124,
+          "edge_ci_low": -0.0655,
+          "edge_ci_high": 0.0379,
+          "p_value": 0.606,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.53,
+          "raw_fired_avg_pct": 0.25,
+          "raw_control_avg_pct": 0.24,
+          "raw_edge_pct": 0.01,
+          "oos": {
+            "n_days": 361,
+            "edge_pct": -0.0342,
+            "ci_low": -0.135,
+            "ci_high": 0.0761,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 668,
+              "edge_pct": -0.0053,
+              "ci_low": -0.0669,
+              "ci_high": 0.0563,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 546,
+              "edge_pct": -0.023,
+              "ci_low": -0.106,
+              "ci_high": 0.0625,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "10d": {
+          "n_obs": 258548,
+          "n_days": 1209,
+          "n_indep": 120,
+          "edge_pct": 0.0082,
+          "edge_ci_low": -0.083,
+          "edge_ci_high": 0.1097,
+          "p_value": 0.866,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.539,
+          "raw_fired_avg_pct": 0.55,
+          "raw_control_avg_pct": 0.48,
+          "raw_edge_pct": 0.07,
+          "oos": {
+            "n_days": 356,
+            "edge_pct": 0.0444,
+            "ci_low": -0.1357,
+            "ci_high": 0.2309,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 664,
+              "edge_pct": 0.0636,
+              "ci_low": -0.039,
+              "ci_high": 0.1718,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 545,
+              "edge_pct": -0.0742,
+              "ci_low": -0.2066,
+              "ci_high": 0.0859,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "21d": {
+          "n_obs": 255375,
+          "n_days": 1198,
+          "n_indep": 57,
+          "edge_pct": 0.0864,
+          "edge_ci_low": -0.0564,
+          "edge_ci_high": 0.2329,
+          "p_value": 0.212,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.538,
+          "raw_fired_avg_pct": 1.14,
+          "raw_control_avg_pct": 1.1,
+          "raw_edge_pct": 0.04,
+          "oos": {
+            "n_days": 345,
+            "edge_pct": 0.1318,
+            "ci_low": -0.1473,
+            "ci_high": 0.4356,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 653,
+              "edge_pct": 0.0924,
+              "ci_low": -0.0766,
+              "ci_high": 0.2647,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 545,
+              "edge_pct": 0.0777,
+              "ci_low": -0.1275,
+              "ci_high": 0.2971,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        }
+      }
+    },
+    "rvol_high": {
+      "key": "rvol",
+      "label": "\u76f8\u5bf9\u91cf \u2265 2\u00d7 \u00b7 \u653e\u91cf",
+      "direction": "long",
+      "indicative_only": true,
+      "horizons": {
+        "1d": {
+          "n_obs": 25718,
+          "n_days": 1202,
+          "n_indep": 240,
+          "edge_pct": 0.0153,
+          "edge_ci_low": -0.0194,
+          "edge_ci_high": 0.0518,
+          "p_value": 0.402,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.498,
+          "raw_fired_avg_pct": 0.0,
+          "raw_control_avg_pct": 0.02,
+          "raw_edge_pct": -0.02,
+          "oos": {
+            "n_days": 358,
+            "edge_pct": 0.0224,
+            "ci_low": -0.0288,
+            "ci_high": 0.0767,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 663,
+              "edge_pct": -0.0122,
+              "ci_low": -0.0515,
+              "ci_high": 0.0228,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 539,
+              "edge_pct": 0.0478,
+              "ci_low": -0.0121,
+              "ci_high": 0.1117,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "3d": {
+          "n_obs": 25706,
+          "n_days": 1200,
+          "n_indep": 240,
+          "edge_pct": 0.0536,
+          "edge_ci_low": -0.0237,
+          "edge_ci_high": 0.1393,
+          "p_value": 0.192,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.524,
+          "raw_fired_avg_pct": 0.27,
+          "raw_control_avg_pct": 0.12,
+          "raw_edge_pct": 0.15,
+          "oos": {
+            "n_days": 356,
+            "edge_pct": 0.082,
+            "ci_low": -0.0437,
+            "ci_high": 0.2017,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 661,
+              "edge_pct": 0.0364,
+              "ci_low": -0.0396,
+              "ci_high": 0.1161,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 539,
+              "edge_pct": 0.074,
+              "ci_low": -0.0565,
+              "ci_high": 0.2124,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "5d": {
+          "n_obs": 25693,
+          "n_days": 1198,
+          "n_indep": 239,
+          "edge_pct": 0.0634,
+          "edge_ci_low": -0.0318,
+          "edge_ci_high": 0.1622,
+          "p_value": 0.238,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.533,
+          "raw_fired_avg_pct": 0.42,
+          "raw_control_avg_pct": 0.23,
+          "raw_edge_pct": 0.19,
+          "oos": {
+            "n_days": 354,
+            "edge_pct": 0.0417,
+            "ci_low": -0.1344,
+            "ci_high": 0.2043,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 659,
+              "edge_pct": 0.0281,
+              "ci_low": -0.0823,
+              "ci_high": 0.1479,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 539,
+              "edge_pct": 0.1051,
+              "ci_low": -0.0509,
+              "ci_high": 0.2586,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "10d": {
+          "n_obs": 25573,
+          "n_days": 1193,
+          "n_indep": 119,
+          "edge_pct": 0.11,
+          "edge_ci_low": -0.0304,
+          "edge_ci_high": 0.2388,
+          "p_value": 0.118,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.549,
+          "raw_fired_avg_pct": 0.8,
+          "raw_control_avg_pct": 0.5,
+          "raw_edge_pct": 0.3,
+          "oos": {
+            "n_days": 349,
+            "edge_pct": 0.0925,
+            "ci_low": -0.1902,
+            "ci_high": 0.3751,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 655,
+              "edge_pct": 0.0659,
+              "ci_low": -0.1239,
+              "ci_high": 0.2559,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 538,
+              "edge_pct": 0.1619,
+              "ci_low": -0.0402,
+              "ci_high": 0.3468,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "21d": {
+          "n_obs": 25374,
+          "n_days": 1182,
+          "n_indep": 56,
+          "edge_pct": 0.1604,
+          "edge_ci_low": -0.0389,
+          "edge_ci_high": 0.3488,
+          "p_value": 0.134,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.557,
+          "raw_fired_avg_pct": 1.59,
+          "raw_control_avg_pct": 1.09,
+          "raw_edge_pct": 0.5,
+          "oos": {
+            "n_days": 338,
+            "edge_pct": 0.219,
+            "ci_low": -0.1415,
+            "ci_high": 0.619,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 644,
+              "edge_pct": 0.1011,
+              "ci_low": -0.112,
+              "ci_high": 0.3287,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 538,
+              "edge_pct": 0.2293,
+              "ci_low": -0.0866,
+              "ci_high": 0.5061,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        }
+      }
+    },
+    "gap_up": {
+      "key": "gap",
+      "label": "\u8df3\u7a7a \u2265 +2% \u00b7 \u9ad8\u5f00",
+      "direction": "long",
+      "indicative_only": false,
+      "horizons": {
+        "1d": {
+          "n_obs": 19202,
+          "n_days": 1144,
+          "n_indep": 228,
+          "edge_pct": 0.0408,
+          "edge_ci_low": -0.0634,
+          "edge_ci_high": 0.1359,
+          "p_value": 0.494,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.514,
+          "raw_fired_avg_pct": 0.23,
+          "raw_control_avg_pct": 0.01,
+          "raw_edge_pct": 0.22,
+          "oos": {
+            "n_days": 359,
+            "edge_pct": 0.1148,
+            "ci_low": -0.0783,
+            "ci_high": 0.3015,
+            "verdict": "coin_flip"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 643,
+              "edge_pct": -0.0243,
+              "ci_low": -0.1321,
+              "ci_high": 0.0844,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 501,
+              "edge_pct": 0.1066,
+              "ci_low": -0.0644,
+              "ci_high": 0.2669,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "3d": {
+          "n_obs": 19137,
+          "n_days": 1142,
+          "n_indep": 228,
+          "edge_pct": 0.2033,
+          "edge_ci_low": 0.0243,
+          "edge_ci_high": 0.3647,
+          "p_value": 0.032,
+          "verdict": "edge",
+          "survives_fdr": false,
+          "hit_rate": 0.538,
+          "raw_fired_avg_pct": 0.48,
+          "raw_control_avg_pct": 0.12,
+          "raw_edge_pct": 0.36,
+          "oos": {
+            "n_days": 357,
+            "edge_pct": 0.4094,
+            "ci_low": 0.0939,
+            "ci_high": 0.6836,
+            "verdict": "edge"
+          },
+          "holds_oos": true,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 641,
+              "edge_pct": 0.2194,
+              "ci_low": -0.006,
+              "ci_high": 0.4349,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 501,
+              "edge_pct": 0.1872,
+              "ci_low": -0.0457,
+              "ci_high": 0.4066,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "5d": {
+          "n_obs": 19080,
+          "n_days": 1140,
+          "n_indep": 228,
+          "edge_pct": 0.2455,
+          "edge_ci_low": -0.0122,
+          "edge_ci_high": 0.4869,
+          "p_value": 0.06,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "hit_rate": 0.551,
+          "raw_fired_avg_pct": 0.82,
+          "raw_control_avg_pct": 0.22,
+          "raw_edge_pct": 0.6,
+          "oos": {
+            "n_days": 355,
+            "edge_pct": 0.4541,
+            "ci_low": 0.0104,
+            "ci_high": 0.9286,
+            "verdict": "edge"
+          },
+          "holds_oos": false,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 639,
+              "edge_pct": 0.2195,
+              "ci_low": -0.1432,
+              "ci_high": 0.5768,
+              "verdict": "coin_flip"
+            },
+            "other": {
+              "n_days": 501,
+              "edge_pct": 0.2715,
+              "ci_low": -0.0524,
+              "ci_high": 0.5947,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "10d": {
+          "n_obs": 18942,
+          "n_days": 1135,
+          "n_indep": 113,
+          "edge_pct": 0.6284,
+          "edge_ci_low": 0.182,
+          "edge_ci_high": 1.0531,
+          "p_value": 0.006,
+          "verdict": "edge",
+          "survives_fdr": false,
+          "hit_rate": 0.573,
+          "raw_fired_avg_pct": 1.74,
+          "raw_control_avg_pct": 0.47,
+          "raw_edge_pct": 1.27,
+          "oos": {
+            "n_days": 350,
+            "edge_pct": 1.0329,
+            "ci_low": 0.0794,
+            "ci_high": 1.9413,
+            "verdict": "edge"
+          },
+          "holds_oos": true,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 635,
+              "edge_pct": 0.6793,
+              "ci_low": 0.0532,
+              "ci_high": 1.328,
+              "verdict": "edge"
+            },
+            "other": {
+              "n_days": 500,
+              "edge_pct": 0.5784,
+              "ci_low": -0.0635,
+              "ci_high": 1.2382,
+              "verdict": "coin_flip"
+            }
+          },
+          "verdict_final": "coin_flip"
+        },
+        "21d": {
+          "n_obs": 18537,
+          "n_days": 1124,
+          "n_indep": 53,
+          "edge_pct": 1.5992,
+          "edge_ci_low": 0.7153,
+          "edge_ci_high": 2.4318,
+          "p_value": 0.0,
+          "verdict": "edge",
+          "survives_fdr": true,
+          "hit_rate": 0.583,
+          "raw_fired_avg_pct": 3.66,
+          "raw_control_avg_pct": 1.02,
+          "raw_edge_pct": 2.64,
+          "oos": {
+            "n_days": 339,
+            "edge_pct": 3.0311,
+            "ci_low": 1.152,
+            "ci_high": 4.5102,
+            "verdict": "edge"
+          },
+          "holds_oos": true,
+          "by_regime": {
+            "risk_on": {
+              "n_days": 624,
+              "edge_pct": 1.9335,
+              "ci_low": 0.8417,
+              "ci_high": 2.8888,
+              "verdict": "edge"
+            },
+            "other": {
+              "n_days": 500,
+              "edge_pct": 1.2839,
+              "ci_low": 0.0891,
+              "ci_high": 2.5337,
+              "verdict": "edge"
+            }
+          },
+          "verdict_final": "edge"
+        }
+      }
+    }
+  },
+  "git_sha": "3e2f141",
+  "generated_at": "2026-07-15T06:01:09Z"
+}

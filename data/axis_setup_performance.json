@@ -1,0 +1,1233 @@
+{
+  "note": "MECHANICAL study: buy-every-signal, next-open entry, no confirmation, no chart discretion \u2014 grades the RULE, not the trader. In-sample, current-membership universe (survivorship cuts hardest in reversal cohorts \u2014 'edge' at >=21d requires ci_low > 0.5%). Weekly flags causal as-of each day.",
+  "horizons": [
+    1,
+    5,
+    10,
+    21,
+    42,
+    63
+  ],
+  "mde_bands": {
+    "1": 0.5,
+    "5": 1.0,
+    "10": 1.5,
+    "21": 1.5,
+    "42": 2.0,
+    "63": 2.5
+  },
+  "primary_family": [
+    "A1@21d",
+    "A1@63d",
+    "B_minus_C@21d",
+    "B_minus_C@63d"
+  ],
+  "primary": {
+    "A1@21d": {
+      "p_value": 0.958,
+      "survives_fdr": false,
+      "verdict_final": "coin_flip"
+    },
+    "A1@63d": {
+      "p_value": 0.212,
+      "survives_fdr": false,
+      "verdict_final": "coin_flip"
+    },
+    "B_minus_C@21d": {
+      "p_value": 0.506,
+      "survives_fdr": false,
+      "verdict_final": "coin_flip"
+    },
+    "B_minus_C@63d": {
+      "p_value": 0.31,
+      "survives_fdr": false,
+      "verdict_final": "coin_flip"
+    }
+  },
+  "universe": {
+    "n_symbols": 510,
+    "n_rows": 507480,
+    "first_date": "2021-08-30",
+    "last_date": "2026-07-09",
+    "weekly_defined_from": "2022-03-11",
+    "rows_weekly_undefined": 50512
+  },
+  "cohorts": {
+    "D_unmasked": {
+      "definition": "all bull crosses, whole panel (replication of committed coin_flip)",
+      "n_events": 20228,
+      "horizons": {
+        "1d": {
+          "mean": -0.0062,
+          "ci_low": -0.0371,
+          "ci_high": 0.0213,
+          "p_value": 0.602,
+          "n_obs": 20215,
+          "n_days": 1191,
+          "n_episodes": 20,
+          "episode_means": [
+            0.046,
+            0.031,
+            0.033,
+            -0.123,
+            0.05,
+            -0.758,
+            0.033,
+            2.389,
+            0.004,
+            0.314,
+            0.081,
+            -0.021
+          ],
+          "mde_pct": 0.029,
+          "verdict": "coin_flip"
+        },
+        "5d": {
+          "mean": -0.0384,
+          "ci_low": -0.1342,
+          "ci_high": 0.0492,
+          "p_value": 0.378,
+          "n_obs": 20127,
+          "n_days": 1187,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.038
+          ],
+          "mde_pct": 0.092,
+          "verdict": "coin_flip"
+        },
+        "10d": {
+          "mean": -0.1262,
+          "ci_low": -0.2629,
+          "ci_high": 0.0238,
+          "p_value": 0.09,
+          "n_obs": 20004,
+          "n_days": 1182,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.126
+          ],
+          "mde_pct": 0.143,
+          "verdict": "coin_flip"
+        },
+        "21d": {
+          "mean": -0.1611,
+          "ci_low": -0.3291,
+          "ci_high": 0.031,
+          "p_value": 0.112,
+          "n_obs": 19761,
+          "n_days": 1171,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.161
+          ],
+          "mde_pct": 0.18,
+          "verdict": "coin_flip"
+        },
+        "42d": {
+          "mean": -0.0921,
+          "ci_low": -0.3255,
+          "ci_high": 0.1782,
+          "p_value": 0.568,
+          "n_obs": 19246,
+          "n_days": 1150,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.092
+          ],
+          "mde_pct": 0.252,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": 0.0542,
+          "ci_low": -0.3165,
+          "ci_high": 0.3806,
+          "p_value": 0.734,
+          "n_obs": 18976,
+          "n_days": 1129,
+          "n_episodes": 1,
+          "episode_means": [
+            0.054
+          ],
+          "mde_pct": 0.349,
+          "verdict": "coin_flip"
+        }
+      }
+    },
+    "D_masked": {
+      "definition": "all bull crosses on the weekly-defined row set",
+      "n_events": 18186,
+      "horizons": {
+        "1d": {
+          "mean": -0.0074,
+          "ci_low": -0.0375,
+          "ci_high": 0.0222,
+          "p_value": 0.568,
+          "n_obs": 18173,
+          "n_days": 1062,
+          "n_episodes": 13,
+          "episode_means": [
+            0.044,
+            2.389,
+            0.001,
+            0.079,
+            -0.029,
+            -0.046,
+            0.031,
+            -0.026,
+            -0.107,
+            -0.026,
+            -0.507,
+            -0.011
+          ],
+          "mde_pct": 0.03,
+          "verdict": "coin_flip"
+        },
+        "5d": {
+          "mean": -0.045,
+          "ci_low": -0.1365,
+          "ci_high": 0.0536,
+          "p_value": 0.348,
+          "n_obs": 18085,
+          "n_days": 1058,
+          "n_episodes": 2,
+          "episode_means": [
+            -0.05,
+            -0.044
+          ],
+          "mde_pct": 0.095,
+          "verdict": "coin_flip"
+        },
+        "10d": {
+          "mean": -0.1371,
+          "ci_low": -0.2751,
+          "ci_high": 0.0089,
+          "p_value": 0.064,
+          "n_obs": 17962,
+          "n_days": 1053,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.137
+          ],
+          "mde_pct": 0.142,
+          "verdict": "coin_flip"
+        },
+        "21d": {
+          "mean": -0.1596,
+          "ci_low": -0.342,
+          "ci_high": 0.0371,
+          "p_value": 0.098,
+          "n_obs": 17720,
+          "n_days": 1042,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.16
+          ],
+          "mde_pct": 0.19,
+          "verdict": "coin_flip"
+        },
+        "42d": {
+          "mean": -0.1403,
+          "ci_low": -0.415,
+          "ci_high": 0.1433,
+          "p_value": 0.368,
+          "n_obs": 17206,
+          "n_days": 1021,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.14
+          ],
+          "mde_pct": 0.279,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": 0.044,
+          "ci_low": -0.3127,
+          "ci_high": 0.4441,
+          "p_value": 0.822,
+          "n_obs": 16937,
+          "n_days": 1000,
+          "n_episodes": 1,
+          "episode_means": [
+            0.044
+          ],
+          "mde_pct": 0.378,
+          "verdict": "coin_flip"
+        }
+      }
+    },
+    "B": {
+      "definition": "bull cross & macd_line<0 at the cross close (\u8f74\u4e0b, no weekly filter)",
+      "n_events": 10443,
+      "horizons": {
+        "1d": {
+          "mean": 0.0145,
+          "ci_low": -0.0285,
+          "ci_high": 0.0553,
+          "p_value": 0.466,
+          "n_obs": 10434,
+          "n_days": 1005,
+          "n_episodes": 54,
+          "episode_means": [
+            0.169,
+            -0.086,
+            0.348,
+            0.013,
+            4.195,
+            -0.003,
+            0.107,
+            1.805,
+            -0.136,
+            0.384,
+            0.066,
+            0.774
+          ],
+          "mde_pct": 0.042,
+          "verdict": "coin_flip"
+        },
+        "5d": {
+          "mean": -0.0121,
+          "ci_low": -0.1517,
+          "ci_high": 0.1284,
+          "p_value": 0.836,
+          "n_obs": 10374,
+          "n_days": 1001,
+          "n_episodes": 2,
+          "episode_means": [
+            -0.014,
+            -0.012
+          ],
+          "mde_pct": 0.14,
+          "verdict": "coin_flip"
+        },
+        "10d": {
+          "mean": -0.0279,
+          "ci_low": -0.2578,
+          "ci_high": 0.2136,
+          "p_value": 0.802,
+          "n_obs": 10327,
+          "n_days": 996,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.028
+          ],
+          "mde_pct": 0.236,
+          "verdict": "coin_flip"
+        },
+        "21d": {
+          "mean": -0.068,
+          "ci_low": -0.4081,
+          "ci_high": 0.3162,
+          "p_value": 0.704,
+          "n_obs": 10205,
+          "n_days": 985,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.068
+          ],
+          "mde_pct": 0.362,
+          "verdict": "coin_flip"
+        },
+        "42d": {
+          "mean": 0.0492,
+          "ci_low": -0.5296,
+          "ci_high": 0.6316,
+          "p_value": 0.884,
+          "n_obs": 9895,
+          "n_days": 964,
+          "n_episodes": 1,
+          "episode_means": [
+            0.049
+          ],
+          "mde_pct": 0.581,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": 0.364,
+          "ci_low": -0.3629,
+          "ci_high": 0.9412,
+          "p_value": 0.268,
+          "n_obs": 9750,
+          "n_days": 943,
+          "n_episodes": 1,
+          "episode_means": [
+            0.364
+          ],
+          "mde_pct": 0.652,
+          "verdict": "coin_flip"
+        }
+      }
+    },
+    "C": {
+      "definition": "bull cross & macd_line>=0 (\u8f74\u4e0a continuation)",
+      "n_events": 7743,
+      "horizons": {
+        "1d": {
+          "mean": -0.0369,
+          "ci_low": -0.0837,
+          "ci_high": 0.0105,
+          "p_value": 0.134,
+          "n_obs": 7739,
+          "n_days": 984,
+          "n_episodes": 69,
+          "episode_means": [
+            -0.241,
+            -1.922,
+            0.363,
+            0.751,
+            -0.059,
+            -0.071,
+            0.132,
+            -0.61,
+            0.584,
+            -0.12,
+            0.287,
+            0.338
+          ],
+          "mde_pct": 0.047,
+          "verdict": "coin_flip"
+        },
+        "5d": {
+          "mean": -0.0892,
+          "ci_low": -0.2463,
+          "ci_high": 0.06,
+          "p_value": 0.238,
+          "n_obs": 7711,
+          "n_days": 980,
+          "n_episodes": 2,
+          "episode_means": [
+            -0.165,
+            -0.085
+          ],
+          "mde_pct": 0.153,
+          "verdict": "coin_flip"
+        },
+        "10d": {
+          "mean": -0.2847,
+          "ci_low": -0.5066,
+          "ci_high": -0.0553,
+          "p_value": 0.012,
+          "n_obs": 7635,
+          "n_days": 975,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.285
+          ],
+          "mde_pct": 0.226,
+          "verdict": "adverse"
+        },
+        "21d": {
+          "mean": -0.2839,
+          "ci_low": -0.7282,
+          "ci_high": 0.1212,
+          "p_value": 0.166,
+          "n_obs": 7515,
+          "n_days": 964,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.284
+          ],
+          "mde_pct": 0.425,
+          "verdict": "coin_flip"
+        },
+        "42d": {
+          "mean": -0.3969,
+          "ci_low": -1.1706,
+          "ci_high": 0.3085,
+          "p_value": 0.268,
+          "n_obs": 7311,
+          "n_days": 943,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.397
+          ],
+          "mde_pct": 0.74,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": -0.3902,
+          "ci_low": -1.6182,
+          "ci_high": 0.6053,
+          "p_value": 0.48,
+          "n_obs": 7187,
+          "n_days": 926,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.39
+          ],
+          "mde_pct": 1.112,
+          "verdict": "coin_flip"
+        }
+      }
+    },
+    "A1": {
+      "definition": "bull cross & macd_line<0 & LAST-AS-OF weekly MACD hist < 0",
+      "n_events": 8838,
+      "horizons": {
+        "1d": {
+          "mean": 0.0189,
+          "ci_low": -0.0209,
+          "ci_high": 0.0597,
+          "p_value": 0.362,
+          "n_obs": 8831,
+          "n_days": 977,
+          "n_episodes": 74,
+          "episode_means": [
+            0.192,
+            1.384,
+            -0.029,
+            1.255,
+            0.979,
+            -0.065,
+            0.027,
+            4.195,
+            0.028,
+            0.008,
+            0.661,
+            -0.239
+          ],
+          "mde_pct": 0.04,
+          "verdict": "coin_flip"
+        },
+        "5d": {
+          "mean": 0.0088,
+          "ci_low": -0.1343,
+          "ci_high": 0.1512,
+          "p_value": 0.906,
+          "n_obs": 8784,
+          "n_days": 973,
+          "n_episodes": 3,
+          "episode_means": [
+            0.088,
+            -0.201,
+            0.011
+          ],
+          "mde_pct": 0.143,
+          "verdict": "coin_flip"
+        },
+        "10d": {
+          "mean": 0.0317,
+          "ci_low": -0.2113,
+          "ci_high": 0.2804,
+          "p_value": 0.804,
+          "n_obs": 8752,
+          "n_days": 968,
+          "n_episodes": 1,
+          "episode_means": [
+            0.032
+          ],
+          "mde_pct": 0.246,
+          "verdict": "coin_flip"
+        },
+        "21d": {
+          "mean": 0.0138,
+          "ci_low": -0.3071,
+          "ci_high": 0.3335,
+          "p_value": 0.958,
+          "n_obs": 8659,
+          "n_days": 957,
+          "n_episodes": 1,
+          "episode_means": [
+            0.014
+          ],
+          "mde_pct": 0.32,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "verdict_final": "coin_flip"
+        },
+        "42d": {
+          "mean": 0.1527,
+          "ci_low": -0.4428,
+          "ci_high": 0.7187,
+          "p_value": 0.63,
+          "n_obs": 8395,
+          "n_days": 936,
+          "n_episodes": 1,
+          "episode_means": [
+            0.153
+          ],
+          "mde_pct": 0.581,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": 0.4712,
+          "ci_low": -0.3059,
+          "ci_high": 1.14,
+          "p_value": 0.212,
+          "n_obs": 8272,
+          "n_days": 917,
+          "n_episodes": 1,
+          "episode_means": [
+            0.471
+          ],
+          "mde_pct": 0.723,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "verdict_final": "coin_flip"
+        }
+      }
+    },
+    "A2": {
+      "definition": "bull cross & macd_line<0 & as-of weekly MACD LINE < 0",
+      "n_events": 6135,
+      "horizons": {
+        "1d": {
+          "mean": 0.018,
+          "ci_low": -0.0371,
+          "ci_high": 0.0711,
+          "p_value": 0.498,
+          "n_obs": 6132,
+          "n_days": 929,
+          "n_episodes": 98,
+          "episode_means": [
+            0.316,
+            2.582,
+            -0.413,
+            -0.05,
+            0.058,
+            -0.075,
+            0.314,
+            0.309,
+            1.912,
+            -0.059,
+            0.542,
+            1.452
+          ],
+          "mde_pct": 0.054,
+          "verdict": "coin_flip"
+        },
+        "5d": {
+          "mean": -0.0027,
+          "ci_low": -0.1959,
+          "ci_high": 0.1887,
+          "p_value": 0.96,
+          "n_obs": 6098,
+          "n_days": 926,
+          "n_episodes": 5,
+          "episode_means": [
+            0.009,
+            0.161,
+            -0.612,
+            0.004,
+            0.11
+          ],
+          "mde_pct": 0.192,
+          "verdict": "coin_flip"
+        },
+        "10d": {
+          "mean": 0.0539,
+          "ci_low": -0.265,
+          "ci_high": 0.3659,
+          "p_value": 0.772,
+          "n_obs": 6062,
+          "n_days": 921,
+          "n_episodes": 1,
+          "episode_means": [
+            0.054
+          ],
+          "mde_pct": 0.315,
+          "verdict": "coin_flip"
+        },
+        "21d": {
+          "mean": -0.0508,
+          "ci_low": -0.5762,
+          "ci_high": 0.4674,
+          "p_value": 0.838,
+          "n_obs": 5988,
+          "n_days": 911,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.051
+          ],
+          "mde_pct": 0.522,
+          "verdict": "coin_flip"
+        },
+        "42d": {
+          "mean": -0.1044,
+          "ci_low": -0.9506,
+          "ci_high": 0.7454,
+          "p_value": 0.844,
+          "n_obs": 5801,
+          "n_days": 891,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.104
+          ],
+          "mde_pct": 0.848,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": 0.0395,
+          "ci_low": -0.8966,
+          "ci_high": 1.013,
+          "p_value": 0.934,
+          "n_obs": 5706,
+          "n_days": 873,
+          "n_episodes": 1,
+          "episode_means": [
+            0.04
+          ],
+          "mde_pct": 0.955,
+          "verdict": "coin_flip"
+        }
+      }
+    },
+    "A3": {
+      "definition": "bull cross & macd_line<0 & close < as-of 30-week MA",
+      "n_events": 6824,
+      "horizons": {
+        "1d": {
+          "mean": 0.027,
+          "ci_low": -0.0232,
+          "ci_high": 0.082,
+          "p_value": 0.302,
+          "n_obs": 6819,
+          "n_days": 947,
+          "n_episodes": 86,
+          "episode_means": [
+            0.293,
+            0.991,
+            -0.413,
+            -0.05,
+            0.051,
+            -0.006,
+            0.344,
+            0.043,
+            -0.094,
+            0.329,
+            0.021,
+            1.021
+          ],
+          "mde_pct": 0.053,
+          "verdict": "coin_flip"
+        },
+        "5d": {
+          "mean": -0.0157,
+          "ci_low": -0.1812,
+          "ci_high": 0.1735,
+          "p_value": 0.856,
+          "n_obs": 6777,
+          "n_days": 943,
+          "n_episodes": 5,
+          "episode_means": [
+            0.005,
+            0.106,
+            -0.669,
+            -0.022,
+            0.091
+          ],
+          "mde_pct": 0.177,
+          "verdict": "coin_flip"
+        },
+        "10d": {
+          "mean": -0.0305,
+          "ci_low": -0.3236,
+          "ci_high": 0.2785,
+          "p_value": 0.864,
+          "n_obs": 6743,
+          "n_days": 938,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.03
+          ],
+          "mde_pct": 0.301,
+          "verdict": "coin_flip"
+        },
+        "21d": {
+          "mean": -0.1131,
+          "ci_low": -0.6488,
+          "ci_high": 0.3875,
+          "p_value": 0.612,
+          "n_obs": 6664,
+          "n_days": 928,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.113
+          ],
+          "mde_pct": 0.518,
+          "verdict": "coin_flip"
+        },
+        "42d": {
+          "mean": 0.0666,
+          "ci_low": -0.7726,
+          "ci_high": 0.8334,
+          "p_value": 0.836,
+          "n_obs": 6457,
+          "n_days": 907,
+          "n_episodes": 1,
+          "episode_means": [
+            0.067
+          ],
+          "mde_pct": 0.803,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": 0.2876,
+          "ci_low": -0.6844,
+          "ci_high": 1.1749,
+          "p_value": 0.532,
+          "n_obs": 6360,
+          "n_days": 890,
+          "n_episodes": 1,
+          "episode_means": [
+            0.288
+          ],
+          "mde_pct": 0.93,
+          "verdict": "coin_flip"
+        }
+      }
+    },
+    "A1_completed": {
+      "definition": "A1 but weekly hist from the last COMPLETED week only",
+      "n_events": 8993,
+      "horizons": {
+        "1d": {
+          "mean": 0.0205,
+          "ci_low": -0.0211,
+          "ci_high": 0.0615,
+          "p_value": 0.332,
+          "n_obs": 8986,
+          "n_days": 979,
+          "n_episodes": 73,
+          "episode_means": [
+            0.212,
+            1.384,
+            -0.261,
+            0.348,
+            -0.004,
+            0.003,
+            4.195,
+            0.026,
+            0.014,
+            0.661,
+            -0.337,
+            -0.898
+          ],
+          "mde_pct": 0.041,
+          "verdict": "coin_flip"
+        },
+        "5d": {
+          "mean": 0.0003,
+          "ci_low": -0.1365,
+          "ci_high": 0.1439,
+          "p_value": 0.998,
+          "n_obs": 8939,
+          "n_days": 975,
+          "n_episodes": 3,
+          "episode_means": [
+            0.062,
+            -0.239,
+            0.008
+          ],
+          "mde_pct": 0.14,
+          "verdict": "coin_flip"
+        },
+        "10d": {
+          "mean": 0.0116,
+          "ci_low": -0.2442,
+          "ci_high": 0.2557,
+          "p_value": 0.918,
+          "n_obs": 8905,
+          "n_days": 970,
+          "n_episodes": 1,
+          "episode_means": [
+            0.012
+          ],
+          "mde_pct": 0.25,
+          "verdict": "coin_flip"
+        },
+        "21d": {
+          "mean": -0.0214,
+          "ci_low": -0.3571,
+          "ci_high": 0.2894,
+          "p_value": 0.868,
+          "n_obs": 8804,
+          "n_days": 959,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.021
+          ],
+          "mde_pct": 0.323,
+          "verdict": "coin_flip"
+        },
+        "42d": {
+          "mean": 0.0829,
+          "ci_low": -0.5488,
+          "ci_high": 0.6697,
+          "p_value": 0.79,
+          "n_obs": 8533,
+          "n_days": 938,
+          "n_episodes": 1,
+          "episode_means": [
+            0.083
+          ],
+          "mde_pct": 0.609,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": 0.4133,
+          "ci_low": -0.338,
+          "ci_high": 1.049,
+          "p_value": 0.272,
+          "n_obs": 8405,
+          "n_days": 918,
+          "n_episodes": 1,
+          "episode_means": [
+            0.413
+          ],
+          "mde_pct": 0.694,
+          "verdict": "coin_flip"
+        }
+      }
+    },
+    "B_deep": {
+      "definition": "B with \u8f74\u4e0b depth (macd_line/close) in the deepest tercile of B",
+      "n_events": 3481,
+      "horizons": {
+        "1d": {
+          "mean": 0.0665,
+          "ci_low": -0.0107,
+          "ci_high": 0.1543,
+          "p_value": 0.084,
+          "n_obs": 3476,
+          "n_days": 731,
+          "n_episodes": 151,
+          "episode_means": [
+            0.418,
+            0.991,
+            -0.546,
+            0.766,
+            0.187,
+            -1.413,
+            -0.455,
+            0.503,
+            0.023,
+            1.027,
+            1.407,
+            0.01
+          ],
+          "mde_pct": 0.082,
+          "verdict": "coin_flip"
+        },
+        "5d": {
+          "mean": 0.063,
+          "ci_low": -0.2424,
+          "ci_high": 0.4024,
+          "p_value": 0.698,
+          "n_obs": 3444,
+          "n_days": 727,
+          "n_episodes": 21,
+          "episode_means": [
+            0.011,
+            0.058,
+            3.732,
+            -0.718,
+            -0.896,
+            -3.327,
+            0.472,
+            2.034,
+            -0.502,
+            0.041,
+            0.084,
+            2.18
+          ],
+          "mde_pct": 0.322,
+          "verdict": "coin_flip"
+        },
+        "10d": {
+          "mean": 0.1519,
+          "ci_low": -0.3604,
+          "ci_high": 0.6968,
+          "p_value": 0.558,
+          "n_obs": 3425,
+          "n_days": 722,
+          "n_episodes": 4,
+          "episode_means": [
+            0.377,
+            1.148,
+            -0.141,
+            0.055
+          ],
+          "mde_pct": 0.529,
+          "verdict": "coin_flip"
+        },
+        "21d": {
+          "mean": 0.313,
+          "ci_low": -0.4318,
+          "ci_high": 1.0639,
+          "p_value": 0.462,
+          "n_obs": 3392,
+          "n_days": 714,
+          "n_episodes": 1,
+          "episode_means": [
+            0.313
+          ],
+          "mde_pct": 0.748,
+          "verdict": "coin_flip"
+        },
+        "42d": {
+          "mean": 1.098,
+          "ci_low": -0.3422,
+          "ci_high": 2.539,
+          "p_value": 0.14,
+          "n_obs": 3304,
+          "n_days": 694,
+          "n_episodes": 1,
+          "episode_means": [
+            1.098
+          ],
+          "mde_pct": 1.441,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": 2.0051,
+          "ci_low": 0.3874,
+          "ci_high": 3.8364,
+          "p_value": 0.018,
+          "n_obs": 3257,
+          "n_days": 680,
+          "n_episodes": 1,
+          "episode_means": [
+            2.005
+          ],
+          "mde_pct": 1.724,
+          "verdict": "single_episode"
+        }
+      }
+    },
+    "A1_confirmed": {
+      "definition": "A1 + hist still >0 at t+1 close; entry t+2 open",
+      "n_events": 8294,
+      "horizons": {
+        "21d": {
+          "mean": -0.0407,
+          "ci_low": -0.3677,
+          "ci_high": 0.2704,
+          "p_value": 0.776,
+          "n_obs": 8126,
+          "n_days": 950,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.041
+          ],
+          "mde_pct": 0.319,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": 0.3616,
+          "ci_low": -0.3825,
+          "ci_high": 1.0148,
+          "p_value": 0.308,
+          "n_obs": 7739,
+          "n_days": 911,
+          "n_episodes": 1,
+          "episode_means": [
+            0.362
+          ],
+          "mde_pct": 0.699,
+          "verdict": "coin_flip"
+        }
+      }
+    },
+    "B_confirmed": {
+      "definition": "B + hist still >0 at t+1 close; entry t+2 open",
+      "n_events": 9757,
+      "horizons": {
+        "21d": {
+          "mean": -0.0967,
+          "ci_low": -0.415,
+          "ci_high": 0.2174,
+          "p_value": 0.56,
+          "n_obs": 9536,
+          "n_days": 977,
+          "n_episodes": 1,
+          "episode_means": [
+            -0.097
+          ],
+          "mde_pct": 0.316,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "mean": 0.3169,
+          "ci_low": -0.2859,
+          "ci_high": 0.8868,
+          "p_value": 0.288,
+          "n_obs": 9083,
+          "n_days": 936,
+          "n_episodes": 1,
+          "episode_means": [
+            0.317
+          ],
+          "mde_pct": 0.586,
+          "verdict": "coin_flip"
+        }
+      }
+    }
+  },
+  "diffs": {
+    "B_minus_C": {
+      "definition": "\u8f74\u4e0b minus \u8f74\u4e0a (reversal vs continuation), paired by date",
+      "horizons": {
+        "1d": {
+          "edge": 0.0514,
+          "ci_low": -0.0104,
+          "ci_high": 0.1124,
+          "p_value": 0.118,
+          "n_a": 10434,
+          "n_b": 7739,
+          "n_days": 1062,
+          "mde_pct": 0.061,
+          "verdict": "coin_flip"
+        },
+        "5d": {
+          "edge": 0.0771,
+          "ci_low": -0.1376,
+          "ci_high": 0.2986,
+          "p_value": 0.49,
+          "n_a": 10374,
+          "n_b": 7711,
+          "n_days": 1058,
+          "mde_pct": 0.218,
+          "verdict": "coin_flip"
+        },
+        "10d": {
+          "edge": 0.2568,
+          "ci_low": -0.0933,
+          "ci_high": 0.6505,
+          "p_value": 0.138,
+          "n_a": 10327,
+          "n_b": 7635,
+          "n_days": 1053,
+          "mde_pct": 0.372,
+          "verdict": "coin_flip"
+        },
+        "21d": {
+          "edge": 0.2159,
+          "ci_low": -0.4192,
+          "ci_high": 0.8621,
+          "p_value": 0.506,
+          "n_a": 10205,
+          "n_b": 7515,
+          "n_days": 1042,
+          "mde_pct": 0.641,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "verdict_final": "coin_flip"
+        },
+        "42d": {
+          "edge": 0.4461,
+          "ci_low": -0.6664,
+          "ci_high": 1.5699,
+          "p_value": 0.454,
+          "n_a": 9895,
+          "n_b": 7311,
+          "n_days": 1021,
+          "mde_pct": 1.118,
+          "verdict": "coin_flip"
+        },
+        "63d": {
+          "edge": 0.7542,
+          "ci_low": -0.7323,
+          "ci_high": 2.2804,
+          "p_value": 0.31,
+          "n_a": 9750,
+          "n_b": 7187,
+          "n_days": 1000,
+          "mde_pct": 1.506,
+          "verdict": "coin_flip",
+          "survives_fdr": false,
+          "verdict_final": "coin_flip"
+        }
+      }
+    },
+    "A1_minus_B": {
+      "definition": "does the weekly filter add anything \u2014 DESCRIPTIVE ONLY (structurally underpowered: A1 \u2282 B)",
+      "verdict_policy": "descriptive",
+      "horizons": {
+        "21d": {
+          "edge": 0.0818,
+          "ci_low": -0.0937,
+          "ci_high": 0.2367,
+          "p_value": 0.322,
+          "n_a": 8659,
+          "n_b": 10205,
+          "n_days": 985,
+          "mde_pct": 0.165,
+          "verdict": "descriptive"
+        },
+        "63d": {
+          "edge": 0.1071,
+          "ci_low": -0.1778,
+          "ci_high": 0.3479,
+          "p_value": 0.45,
+          "n_a": 8272,
+          "n_b": 9750,
+          "n_days": 943,
+          "mde_pct": 0.263,
+          "verdict": "descriptive"
+        }
+      }
+    }
+  },
+  "out_of_sample": {
+    "split_date": "2025-03-21",
+    "cells": {
+      "A1@21d": {
+        "mean": -0.1492,
+        "ci_low": -1.0055,
+        "ci_high": 0.5712,
+        "p_value": 0.642,
+        "n_obs": 2890,
+        "n_days": 287,
+        "n_episodes": 1,
+        "episode_means": [
+          -0.149
+        ],
+        "mde_pct": 0.788,
+        "verdict": "coin_flip"
+      },
+      "A1@63d": {
+        "mean": -0.2238,
+        "ci_low": -2.867,
+        "ci_high": 1.6821,
+        "p_value": 0.826,
+        "n_obs": 2503,
+        "n_days": 247,
+        "n_episodes": 1,
+        "episode_means": [
+          -0.224
+        ],
+        "mde_pct": 2.275,
+        "verdict": "coin_flip"
+      },
+      "B_minus_C@21d": {
+        "edge": -0.1233,
+        "ci_low": -1.4002,
+        "ci_high": 1.3759,
+        "p_value": 0.812,
+        "n_a": 3370,
+        "n_b": 2731,
+        "n_days": 303,
+        "mde_pct": 1.388,
+        "verdict": "coin_flip"
+      },
+      "B_minus_C@63d": {
+        "edge": -0.9244,
+        "ci_low": -3.6645,
+        "ci_high": 2.1313,
+        "p_value": 0.532,
+        "n_a": 2915,
+        "n_b": 2403,
+        "n_days": 261,
+        "mde_pct": 2.898,
+        "verdict": "insufficient_power"
+      }
+    }
+  },
+  "open_questions_for_owner": [
+    "Which weekly-DOWN matches your read: A1 weekly-MACD-hist<0, A2 weekly-MACD-line<0, or A3 price<30-week-MA?",
+    "After you see the daily cross, when do you actually click buy \u2014 next open, or after a confirmation bar?"
+  ],
+  "generated_at": "2026-07-10T05:56:34.448369+00:00",
+  "git_sha": "b8317ad"
+}
