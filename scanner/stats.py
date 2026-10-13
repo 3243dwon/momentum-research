@@ -36,6 +36,7 @@ from __future__ import annotations
 import itertools
 import math
 import random
+from collections.abc import Sequence
 from statistics import NormalDist
 
 # 95% two-sided normal quantile. Kept as a named default so callers can widen to
@@ -100,7 +101,12 @@ def binom_summary(hits: int, n: int, baseline: float = 0.5, z: float = Z_95) -> 
 # Overlap-aware inference — resample DATES, not ticker-days
 # --------------------------------------------------------------------------
 def block_bootstrap_mean_ci(
-    blocks: list[tuple[object, list[float]]],
+    # Sequence, not list: the block KEY is only ever hashed/str()'d here, so any
+    # `list[tuple[str, list[float]]]` a caller already has should pass. list is
+    # invariant, so `list[tuple[object, ...]]` would reject exactly that — and
+    # every caller (goldencross, opening, axis_cross_proof) groups by date-string.
+    # None of the bootstrap functions mutate `blocks`, so read-only is honest.
+    blocks: Sequence[tuple[object, list[float]]],
     n_boot: int = 2000,
     alpha: float = 0.05,
     seed: int = 0,
@@ -163,7 +169,7 @@ def block_bootstrap_mean_ci(
 
 
 def moving_block_bootstrap_mean_ci(
-    blocks: list[tuple[object, list[float]]],
+    blocks: Sequence[tuple[object, list[float]]],
     block_len: int,
     n_boot: int = 2000,
     alpha: float = 0.05,
@@ -235,8 +241,8 @@ def moving_block_bootstrap_mean_ci(
 
 
 def moving_block_bootstrap_diff_ci(
-    a_blocks: list[tuple[object, list[float]]],
-    b_blocks: list[tuple[object, list[float]]],
+    a_blocks: Sequence[tuple[object, list[float]]],
+    b_blocks: Sequence[tuple[object, list[float]]],
     block_len: int,
     n_boot: int = 2000,
     alpha: float = 0.05,
@@ -302,8 +308,8 @@ def moving_block_bootstrap_diff_ci(
 
 
 def block_bootstrap_diff_ci(
-    a_blocks: list[tuple[object, list[float]]],
-    b_blocks: list[tuple[object, list[float]]],
+    a_blocks: Sequence[tuple[object, list[float]]],
+    b_blocks: Sequence[tuple[object, list[float]]],
     n_boot: int = 2000,
     alpha: float = 0.05,
     seed: int = 0,
@@ -383,20 +389,59 @@ def zero_crossing_verdict(ci_low: float | None, ci_high: float | None) -> str:
     return "coin_flip"
 
 
-def benjamini_hochberg(pvalues: list[float | None], q: float = 0.05) -> list[bool]:
-    """Benjamini-Hochberg FDR control across a family of tests.
+# moving_block_bootstrap_mean_ci (and its diff/edge siblings) report p as
+# round(2 * min(frac_le0, frac_ge0), BOOTSTRAP_P_DECIMALS), where the fractions
+# are counts over n_boot resamples. Two separate floors follow, and a p of 0.0
+# means "below whichever binds", NEVER "essentially zero".
+BOOTSTRAP_P_DECIMALS = 4
 
-    Returns a pass/fail flag per input position (True = reject null / survives at
-    false-discovery-rate q). None p-values (untested cells) are never rejected.
-    With ~35 signal×horizon cells at nominal 95%, ~1-2 pass by chance; BH keeps
-    the EXPECTED false-discovery fraction among the passers at q, which is the
-    right family-wide honesty gate for a trust-first product.
+
+def bootstrap_p_floor(n_boot: int) -> float:
+    """Smallest NON-ZERO p-value a bootstrap of `n_boot` resamples can report.
+
+    Two floors, and the binding one is the larger:
+
+      * RESAMPLE resolution. The tail count is an integer k out of n_boot, and
+        the reported p is 2k/n_boot, so the achievable values are
+        {0, 2/n_boot, 4/n_boot, ...}. Nothing lives between 0 and 2/n_boot.
+      * REPORTING precision. p is rounded to BOOTSTRAP_P_DECIMALS, so anything
+        under 5e-5 prints as 0.0 however many resamples were drawn. Past
+        n_boot = 2/1e-4 = 20_000 extra resamples buy no visible resolution.
+
+    Use it as an UPPER BOUND on the true p of a cell whose p came back 0.0: the
+    count was zero, so the true tail is somewhere below this, and how far below
+    is exactly what the bootstrap did not measure. A threshold beneath this
+    floor cannot be cleared on evidence — only by the floored value sorting
+    first. Callers that gate on a p must compare the threshold against this.
+    """
+    resample = 2.0 / n_boot if n_boot > 0 else 1.0
+    reporting = 10.0 ** (-BOOTSTRAP_P_DECIMALS)
+    return max(resample, reporting)
+
+
+def benjamini_hochberg_detail(pvalues: list[float | None], q: float = 0.05) -> dict:
+    """Benjamini-Hochberg FDR with the step-up CRITICAL VALUE exposed.
+
+    Same rejections as benjamini_hochberg (which delegates here, so the two can
+    never drift), plus the number the rejections actually rest on:
+
+        {"survives": [bool], "m": int, "k_max": int, "critical_value": float|None}
+
+    critical_value = (k_max/m)*q, the largest rank's threshold — and under BH's
+    step-up rule that is the effective cut for the WHOLE rejected set, not just
+    for the cell sitting at k_max. It is None when nothing is rejected.
+
+    Why a caller wants it: a p estimated by simulation carries a resolution
+    floor (bootstrap_p_floor), and a rejection is only evidence-backed when the
+    critical value sits AT OR ABOVE that floor. Below it, a p that floored at
+    0.0 is rejected for the arithmetic reason that 0 <= anything — the same
+    verdict it would get if its true p were ten times the threshold.
     """
     indexed = [(i, p) for i, p in enumerate(pvalues) if p is not None]
     m = len(indexed)
     out = [False] * len(pvalues)
     if m == 0:
-        return out
+        return {"survives": out, "m": 0, "k_max": 0, "critical_value": None}
     indexed.sort(key=lambda t: t[1])
     # Largest rank k (1-based) with p_(k) <= (k/m)*q; reject all up to k.
     k_max = 0
@@ -406,7 +451,26 @@ def benjamini_hochberg(pvalues: list[float | None], q: float = 0.05) -> list[boo
     for rank, (orig_i, _) in enumerate(indexed, start=1):
         if rank <= k_max:
             out[orig_i] = True
-    return out
+    return {"survives": out, "m": m, "k_max": k_max,
+            "critical_value": (k_max / m) * q if k_max else None}
+
+
+def benjamini_hochberg(pvalues: list[float | None], q: float = 0.05) -> list[bool]:
+    """Benjamini-Hochberg FDR control across a family of tests.
+
+    Returns a pass/fail flag per input position (True = reject null / survives at
+    false-discovery-rate q). None p-values (untested cells) are never rejected.
+    With ~35 signal×horizon cells at nominal 95%, ~1-2 pass by chance; BH keeps
+    the EXPECTED false-discovery fraction among the passers at q, which is the
+    right family-wide honesty gate for a trust-first product.
+
+    NOTE for callers whose p-values come from a BOOTSTRAP: this function cannot
+    tell a resolved small p from one that floored at 0.0 for want of resamples,
+    and 0.0 clears every threshold by arithmetic. Gate on
+    benjamini_hochberg_detail()["critical_value"] vs bootstrap_p_floor(n_boot)
+    as well — see indicator_proof._resolve_fdr.
+    """
+    return benjamini_hochberg_detail(pvalues, q)["survives"]
 
 
 # --------------------------------------------------------------------------
@@ -639,3 +703,173 @@ def pbo_cscv(matrix: list[list[float]], n_blocks: int = 10,
         "prob_oos_loss": round(oos_losses / n_c, 4),
         "focus": focus_out,
     }
+
+
+# --- Exact-level tests for overlapping-window instruments -------------------
+# Added 2026-08-08 after the rotation sentinel's re-registration. The moving-
+# block bootstrap above is correctly calibrated on the historical panel (~1100
+# dates), but a LIVE instrument reaches its floor at a few dozen dates, and
+# there the bootstrap's asymptotics have not arrived: at n = 11 with
+# block_len = 10 its realised false-positive rate under a true null measures
+# 69%, against a nominal 5%. Widening the interval does not fix that — the
+# failure is that a resample of one block carries no information about the
+# sampling distribution. What fixes it is a test whose level holds BY
+# CONSTRUCTION at any n, which is what these two provide.
+
+
+def _block_means(values: Sequence[float], block_len: int) -> list[float]:
+    """Chop a DATE-ORDERED series into NON-OVERLAPPING blocks and average each.
+
+    Non-overlapping is the whole point: with a `block_len`-day forward window,
+    two observations more than `block_len` apart share no future, so block
+    means are the coarsest unit that is plausibly independent. A trailing
+    partial block is DROPPED rather than kept — a short block has a larger
+    variance than a full one, and mixing the two silently breaks the
+    exchangeability the sign-flip test below relies on.
+    """
+    if block_len < 1:
+        raise ValueError("block_len must be >= 1")
+    k = len(values) // block_len
+    return [math.fsum(values[i * block_len:(i + 1) * block_len]) / block_len
+            for i in range(k)]
+
+
+def sign_flip_block_test(values: Sequence[float], block_len: int,
+                         n_perm: int = 20000, seed: int = 0,
+                         alpha: float = 0.05, ci: bool = True) -> dict:
+    """Randomisation test on the mean of a series with overlapping windows.
+
+    Chops the series into non-overlapping blocks (`_block_means`), then tests
+    H0: the block means are distributed symmetrically about zero, by
+    enumerating or sampling sign flips. Under that null the test is EXACT at
+    any number of blocks — its level does not depend on an asymptotic
+    approximation, which is precisely what fails at live-instrument sample
+    sizes.
+
+    The interval is obtained by INVERTING the test: it is the set of shifts the
+    same randomisation would not reject, so interval and p-value can never
+    disagree (a real failure mode when a CI comes from one procedure and a
+    p-value from another).
+
+    Enumerates all 2**k sign patterns when that is cheaper than `n_perm`, so
+    the small-k case — the one that matters — is exact rather than simulated.
+
+    Returns mean, ci_low, ci_high, p_value, n_blocks, n_obs_used, exact.
+    `p_value` is None when there are no blocks; note the smallest attainable
+    two-sided p on k blocks is 2/2**k, so k < 6 cannot reach 0.05 at all — that
+    is a property of the evidence, not a defect, and callers should floor on
+    `n_blocks` accordingly.
+    """
+    means = _block_means(values, block_len)
+    k = len(means)
+    if k == 0:
+        return {"mean": None, "ci_low": None, "ci_high": None, "p_value": None,
+                "n_blocks": 0, "n_obs_used": 0, "block_sd": None, "exact": False}
+
+    observed = math.fsum(means) / k
+    exact = k <= 20 and 2 ** k <= n_perm
+
+    def _signs():
+        if exact:
+            for combo in itertools.product((1.0, -1.0), repeat=k):
+                yield combo
+        else:
+            rng = random.Random(seed)
+            for _ in range(n_perm):
+                yield tuple(1.0 if rng.random() < 0.5 else -1.0 for _ in range(k))
+
+    patterns = list(_signs())
+
+    def _p_for(shift: float) -> float:
+        """Two-sided randomisation p for H0: mean == shift."""
+        centred = [m - shift for m in means]
+        stat = abs(math.fsum(centred) / k)
+        # +1 in numerator and denominator: the observed assignment is itself one
+        # of the equally likely sign patterns, so excluding it biases p downward.
+        hits = sum(1 for s in patterns
+                   if abs(math.fsum(c * sg for c, sg in zip(centred, s))) / k >= stat - 1e-12)
+        return min(1.0, hits / len(patterns)) if exact else min(1.0, (hits + 1) / (len(patterns) + 1))
+
+    p_value = _p_for(0.0)
+
+    # Invert the test for the interval: bisect outward from the observed mean
+    # for the largest shift still accepted at `alpha`. Monotone in |shift|.
+    spread = max((max(means) - min(means)), abs(observed), 1e-9) * 4 + 1e-9
+
+    def _edge(direction: int) -> float | None:
+        lo, hi = 0.0, spread
+        if _p_for(observed + direction * hi) > alpha:
+            return None  # unbounded within a sane search window
+        for _ in range(40):
+            mid = (lo + hi) / 2
+            if _p_for(observed + direction * mid) > alpha:
+                lo = mid
+            else:
+                hi = mid
+        return observed + direction * lo
+
+    # `ci=False` skips the ~80 extra randomisation passes the inversion costs.
+    # Used by sign_flip_mde, which needs only the p-value and calls this
+    # thousands of times; with the interval on, an MDE would take minutes.
+    ci_low, ci_high = (_edge(-1), _edge(1)) if ci else (None, None)
+    # block_sd rides along so callers can size an MDE without re-chopping the
+    # series through a private helper — the two must never disagree about what
+    # a block is.
+    sd = (math.sqrt(math.fsum((m - observed) ** 2 for m in means) / (k - 1))
+          if k > 1 else None)
+    return {
+        "mean": round(observed, 4),
+        "ci_low": round(ci_low, 4) if ci_low is not None else None,
+        "ci_high": round(ci_high, 4) if ci_high is not None else None,
+        "p_value": round(p_value, 4),
+        "n_blocks": k,
+        "n_obs_used": k * block_len,
+        "block_sd": round(sd, 4) if sd is not None else None,
+        "exact": exact,
+    }
+
+
+def sign_flip_mde(block_sd: float, n_blocks: int, alpha: float = 0.05,
+                  power: float = 0.80, n_sim: int = 2000, seed: int = 0) -> float | None:
+    """Smallest true mean `sign_flip_block_test` would detect `power` of the time.
+
+    Published BESIDE every verdict, so that a "coin_flip" from an instrument
+    that cannot see anything smaller than 3pp is not read as evidence of
+    absence. That misreading is the failure this whole layer exists to prevent.
+
+    Returns None when no effect is detectable at any size — which is the honest
+    answer below 6 blocks, where the smallest attainable p (2/2**k) exceeds
+    0.05 no matter how large the effect.
+    """
+    if n_blocks < 1 or block_sd <= 0:
+        return None
+    if 2.0 / (2 ** n_blocks) > alpha:
+        return None
+
+    rng = random.Random(seed)
+
+    def _power_at(shift: float) -> float:
+        hits = 0
+        for _ in range(n_sim):
+            sample = [rng.gauss(shift, block_sd) for _ in range(n_blocks)]
+            # The test statistic on already-blocked data: reuse the same
+            # machinery with block_len 1 so the two paths cannot drift apart.
+            # 512 draws resolve p to ~0.002, which is ample when the only
+            # question is "p <= alpha". Enumerating 2**k here made the k=20
+            # case take 20s per scan, on a path that runs 11x per weekday.
+            r = sign_flip_block_test(sample, 1, n_perm=min(2 ** n_blocks, 512),
+                                     alpha=alpha, ci=False)
+            if r["p_value"] is not None and r["p_value"] <= alpha:
+                hits += 1
+        return hits / n_sim
+
+    lo, hi = 0.0, block_sd * 6
+    if _power_at(hi) < power:
+        return None
+    for _ in range(9):
+        mid = (lo + hi) / 2
+        if _power_at(mid) >= power:
+            hi = mid
+        else:
+            lo = mid
+    return round(hi, 4)

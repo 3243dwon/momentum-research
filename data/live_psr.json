@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-10-06T14:29:58.147160-04:00",
+  "registration": {
+    "registered": "2026-07-20",
+    "review_date": "2026-09-01",
+    "n_trials": 1,
+    "sr_benchmark": 0.0,
+    "maturity_floors": {
+      "21d": 10,
+      "10d": 15
+    },
+    "psr_pass": 0.95,
+    "psr_fail": 0.05,
+    "primary": {
+      "cohort": "fired",
+      "horizon": "21d"
+    },
+    "note": "RESEARCH.md \u00a710.2 instrument, analysis committed before the 21d cohort matured. n_trials=1 because the cohort, horizon, aggregation, floors and pass bar were all fixed in advance \u2014 a live test that pays no selection penalty. Verdicts stay 'accumulating' below the floors; the September read is whatever this file says on review_date, not a fresh analysis."
+  },
+  "primary": {
+    "cohort": "fired",
+    "horizon": "21d",
+    "n_entry_dates": 52,
+    "n_calls": 272,
+    "maturity_floor_dates": 10,
+    "matured": true,
+    "mean_excess_pct": -2.6586,
+    "sr_per_date": -0.261,
+    "skew": -0.6607,
+    "kurt": 4.2218,
+    "psr": 0.0236,
+    "verdict": "fail_adverse",
+    "first_entry_date": "2026-06-18",
+    "last_entry_date": "2026-09-03"
+  },
+  "cohorts": {
+    "fired": {
+      "21d": {
+        "n_entry_dates": 52,
+        "n_calls": 272,
+        "maturity_floor_dates": 10,
+        "matured": true,
+        "mean_excess_pct": -2.6586,
+        "sr_per_date": -0.261,
+        "skew": -0.6607,
+        "kurt": 4.2218,
+        "psr": 0.0236,
+        "verdict": "fail_adverse",
+        "first_entry_date": "2026-06-18",
+        "last_entry_date": "2026-09-03"
+      },
+      "10d": {
+        "n_entry_dates": 63,
+        "n_calls": 327,
+        "maturity_floor_dates": 15,
+        "matured": true,
+        "mean_excess_pct": -1.1898,
+        "sr_per_date": -0.1908,
+        "skew": -0.942,
+        "kurt": 3.9194,
+        "psr": 0.0512,
+        "verdict": "inconclusive",
+        "first_entry_date": "2026-06-18",
+        "last_entry_date": "2026-09-21"
+      }
+    },
+    "control": {
+      "21d": {
+        "n_entry_dates": 52,
+        "n_calls": 937,
+        "maturity_floor_dates": 10,
+        "matured": true,
+        "mean_excess_pct": -1.0364,
+        "sr_per_date": -0.1212,
+        "skew": 0.9298,
+        "kurt": 4.7185,
+        "psr": 0.2074,
+        "verdict": "inconclusive",
+        "first_entry_date": "2026-06-18",
+        "last_entry_date": "2026-09-03"
+      },
+      "10d": {
+        "n_entry_dates": 63,
+        "n_calls": 1144,
+        "maturity_floor_dates": 15,
+        "matured": true,
+        "mean_excess_pct": -0.0342,
+        "sr_per_date": -0.0054,
+        "skew": 0.8234,
+        "kurt": 4.948,
+        "psr": 0.4831,
+        "verdict": "inconclusive",
+        "first_entry_date": "2026-06-18",
+        "last_entry_date": "2026-09-21"
+      }
+    }
+  },
+  "note": "Per-entry-date mean SPY-excess (the block bootstrap's blocks), PSR with skew/kurtosis inflation (stats.probabilistic_sharpe). Complements edge_vs_control_excess's CI verdicts on the same log."
+}

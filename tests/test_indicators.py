@@ -203,3 +203,25 @@ class TestATR(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_the_macd_line_and_histogram_agree():
+    """`macd_line_series` duplicates three lines of `macd_hist_series` rather
+    than refactoring it — that function feeds goldencross's frozen parameters,
+    the indicator proof and the backtest, and a refactor that is supposed to be
+    bit-identical and quietly is not would corrupt the corpus silently.
+
+    This is what makes the duplication safe: the histogram must equal the line
+    minus the line's own 9-period signal, bar for bar. If either copy is edited
+    alone, this fails.
+    """
+    import numpy as np
+    import pandas as pd
+
+    from scanner import indicators
+
+    rng = np.random.default_rng(7)
+    close = pd.Series(100 + np.cumsum(rng.normal(0, 1.5, 400)))
+    line = indicators.macd_line_series(close)
+    signal = line.ewm(span=9, adjust=False).mean()
+    pd.testing.assert_series_equal(indicators.macd_hist_series(close), line - signal)

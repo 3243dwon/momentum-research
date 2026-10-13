@@ -7,16 +7,34 @@ discipline that connects them.
 
 ## The finding (stated against interest)
 
-35 signal×horizon trials → Benjamini-Hochberg FDR → **1 survivor**
-(gap≥2% @ 21 trading days, ~+1.60% beta-adjusted excess, moving-block-bootstrap
-CI). The overfit audit then splits: **DSR 0.52** (the survivor's *level* does
-not clear the 35-trial search hurdle) vs **PBO 0.048** (the *choice* of survivor
-is stable out of sample). An executable 5-slot portfolio spec built on it
-**loses to SPY** on the same panel. The deployable verdict is deferred to a
-pre-registered LIVE test — kill criteria, maturity floors and pass bars were
-committed to code before the data existed, so the verdict falls out of a script
-nobody can retune after seeing it. Full method, threats to validity and
-lineage: [RESEARCH.md](RESEARCH.md).
+35 signal×horizon trials → Benjamini-Hochberg FDR → **0 survivors**. The best
+cell (gap≥2% @ 21 trading days) reads ~**+1.12%** beta-adjusted excess, CI
+[0.08, 2.11], p=0.037 against a family bar of 0.0014, **point-in-time membership
+conditioned** — mid-window index additions contribute no pre-inclusion history,
+so the backfill half of survivorship is corrected, not just flagged.
+
+**This corrects an earlier headline of "1 survivor, ~+1.42%", and the correction
+is the more useful result.** That figure was correctly computed from a panel
+ending 2026-07-09; the same code on the same frozen universe returns the above
+today. Verified by re-running, not by argument: the entire flip is one calendar
+month (delete June 2026, the worst of 58, and the old number returns bit-for-bit);
+with 21-session overlap the five-year panel carries only ~52 independent
+observations, so one month is roughly one of them; and at the bootstrap resolution
+then shipped the attainable p-grid was {0, 0.002, ...} against a bar of 0.001429,
+so across 12 seeds on the identical published panel, one grades the family 0 of 35.
+The honest characterisation is a ~+1.3 to +1.5pp/21d drift present at that level
+since 2022H2, resting on ~52 observations — **underpowered against its own left
+tail**, not a fabrication and not an edge that decayed. "Exactly one survives"
+overstated what the sample could carry.
+
+The overfit audit (**DSR 0.41** / **PBO 0.12**) still describes the pre-correction
+panel and is flagged as such rather than quietly re-run. An executable 5-slot
+portfolio spec built on the cell **loses to SPY** on the same panel, and stressing
+trades at the OBSERVED index-removal-for-weakness rate (5.2%, calibrated from
+the committed change log) erases the rest. Kill criteria, maturity floors and pass
+bars are committed to code before the data exists, so verdicts fall out of a script
+nobody can retune after seeing them — that discipline is what caught this. Full
+method, threats to validity and lineage: [RESEARCH.md](RESEARCH.md).
 
 ## Judgment days (pre-committed)
 
@@ -37,6 +55,7 @@ day IS the result; there is no post-hoc analysis step to bend.
 | `RESEARCH.md` | the pre-registered honesty audit, §1–12 |
 | `scanner/stats.py` | Wilson/BH-FDR/block+moving-block bootstrap/PSR/DSR/PBO-CSCV — stdlib only |
 | `scanner/indicators.py` | the indicator definitions under test |
+| `scanner/pit.py` + `data/sp500_changes.json` | point-in-time S&P membership (the survivorship fix's fixable half) |
 | `tests/` | the pins for both modules |
 | `data/indicator_performance.json` | per-indicator proof (5y, seeded, CIs) |
 | `data/overfit_audit.json` | DSR + PBO audit artifact |
